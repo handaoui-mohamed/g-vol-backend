@@ -1,4 +1,4 @@
-# Express & mongoose REST API Boilerplate in ES6 with Code Coverage [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+# Swissport Flight record tracking G-VOL [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
 [![Build Status](https://img.shields.io/travis/KunalKapadia/express-mongoose-es6-rest-api/master.svg?style=flat-square)](https://travis-ci.org/KunalKapadia/express-mongoose-es6-rest-api)
 [![Coverage Status](https://img.shields.io/coveralls/KunalKapadia/express-mongoose-es6-rest-api/master.svg?style=flat-square)](https://coveralls.io/github/KunalKapadia/express-mongoose-es6-rest-api?branch=master)
@@ -155,23 +155,4 @@ Get code coverage summary on executing `yarn test`
 
 If you would prefer not to use any of our tooling, delete the following files from the project: `package.json`, `gulpfile.babel.js`, `.eslintrc` and `.travis.yml`. You can now safely use the boilerplate with an alternative build-system or no build-system at all if you choose.
 
-## Docs and Recipes
-
-* [Gulp recipes](https://github.com/gulpjs/gulp/tree/master/docs/recipes) - the official Gulp recipes directory includes a comprehensive list of guides for different workflows you can add to your project.
-
-## Contributing
-
-Contributions, questions and comments are all welcome and encouraged. For code contributions submit a pull request with unit test.
-
-## License
-This project is licensed under the [MIT License](https://github.com/KunalKapadia/express-mongoose-es6-rest-api/blob/master/LICENSE)
-
-## Support Development
-If this project saved your valuable time in getting your service up, and you feel like buying me coffee, you can donate either at my BTC address: `1LkW5UoERR1jjJsChMheKuo6vn95x2mzWg` or at [![Support via Paypal](https://img.shields.io/badge/support-paypal-yellowgreen.svg?style=flat-square)](https://www.paypal.me/KunalKapadia)
-
-Your support is greatly appreciated.
-
-## Meta
-
-Kunal Kapadia – [@kunalkapadia12](https://twitter.com/KunalKapadia12) – kunalkapadia12@gmail.com
 
