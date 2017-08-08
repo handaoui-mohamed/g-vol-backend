@@ -25,6 +25,11 @@ const envVarsSchema = Joi.object({
 }).unknown()
   .required();
 
+process.env.JWT_SECRET = process.env.JWT_SECRET || "ksdhfskdhfiuzefzef64sd5f4sfe@#à@";  
+process.env.PORT = process.env.PORT || 5000;  
+process.env.MONGO_HOST = process.env.MONGO_HOST || "localhost";
+process.env.MONGO_PORT = process.env.MONGO_PORT || 27017;
+
 const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
