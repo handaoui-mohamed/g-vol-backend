@@ -16,19 +16,16 @@ const envVarsSchema = Joi.object({
       then: Joi.boolean().default(true),
       otherwise: Joi.boolean().default(false)
     }),
-  JWT_SECRET: Joi.string().required()
+  JWT_SECRET: Joi.string()
+    .default("ksdhfskdhfiuzefzef64sd5f4sfe@#à@")
     .description('JWT Secret required to sign'),
-  MONGO_HOST: Joi.string().required()
+  MONGO_HOST: Joi.string()
+    .default("localhost")
     .description('Mongo DB host url'),
   MONGO_PORT: Joi.number()
     .default(27017)
 }).unknown()
   .required();
-
-process.env.JWT_SECRET = process.env.JWT_SECRET || "ksdhfskdhfiuzefzef64sd5f4sfe@#à@";  
-process.env.PORT = process.env.PORT || 5000;  
-process.env.MONGO_HOST = process.env.MONGO_HOST || "localhost";
-process.env.MONGO_PORT = process.env.MONGO_PORT || 27017;
 
 const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
 if (error) {
