@@ -18,20 +18,20 @@ after((done) => {
 });
 
 describe('## Account APIs', () => {
-  var account = {
-    username: "username",
-    phone: "0217777777",
-    firstname: "firstname",
-    lastname: "lastname",
-    email: "user@gmail.com",
-    sexe: "female",
-    birthday: "05/05/1988",
-    adress: "user test town",
+  let account = {
+    username: 'username',
+    phone: '0217777777',
+    firstname: 'firstname',
+    lastname: 'lastname',
+    email: 'user@gmail.com',
+    sexe: 'female',
+    birthday: '05/05/1988',
+    adress: 'user test town',
     function: {
-      name: "TRC",
-      description: "description trc"
+      name: 'TRC',
+      description: 'description trc'
     },
-    password: "passwordee"
+    password: 'passwordee'
   };
 
   describe('# POST /api/accounts', () => {
@@ -62,7 +62,7 @@ describe('## Account APIs', () => {
         .send(account)
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          expect(res.body.message).to.equal("Username already exists");
+          expect(res.body.message).to.equal('Username already exists');
           done();
         })
         .catch(done);

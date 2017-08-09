@@ -1,6 +1,6 @@
+import httpStatus from 'http-status';
 import Account from '../models/account.model';
-import httpStatus from "http-status";
-import APIError from "../helpers/APIError";
+import APIError from '../helpers/APIError';
 
 /**
  * Load account and append to req.
@@ -24,13 +24,13 @@ function get(req, res) {
 
 // Create new account
 function create(req, res, next) {
-  Account.findOne({ username: req.body.username }).exec().then(account => {
-    if (account) {
+  Account.findOne({ username: req.body.username.toLowerCase() }).then((result) => {
+    if (result) {
       const err = new APIError('Username already exists', httpStatus.BAD_REQUEST, true);
       next(err);
-    }
-    else {
+    } else {
       const account = new Account(req.body);
+      account.password = Account.hashPassword(account.password);
       account.save()
         .then(savedAccount => res.status(httpStatus.CREATED).json(savedAccount))
         .catch(e => next(e));
@@ -44,8 +44,8 @@ function create(req, res, next) {
  * @returns {Account}
  */
 function update(req, res, next) {
-  let account = req.account;
-  let data = req.body;
+  const account = req.account;
+  const data = req.body;
   account.firstname = data.firstname;
   account.lastname = data.lastname;
   account.phone = data.phone;
@@ -54,6 +54,8 @@ function update(req, res, next) {
   account.birthday = data.birthday;
   account.function.name = data.function.name;
   account.function.description = data.function.description;
+
+  if (data.password) account.password = Account.hashPassword(data.password);
 
   account.save()
     .then(savedAccount => res.json(savedAccount))

@@ -17,10 +17,10 @@ const envVarsSchema = Joi.object({
       otherwise: Joi.boolean().default(false)
     }),
   JWT_SECRET: Joi.string()
-    .default("ksdhfskdhfiuzefzef64sd5f4sfe@#à@")
+    .default('ksdhfskdhfiuzefzef64sd5f4sfe@#à@')
     .description('JWT Secret required to sign'),
   MONGO_HOST: Joi.string()
-    .default("localhost")
+    .default('localhost')
     .description('Mongo DB host url'),
   MONGO_PORT: Joi.number()
     .default(27017)

@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 const body = {
     username: Joi.string().min(5).required(),
     phone: Joi.string(),
@@ -9,7 +10,7 @@ const body = {
     birthday: Joi.date(),
     adress: Joi.string(),
     function: Joi.object({
-        name: Joi.string().valid("TRC", "CLC", "TL", "Tri bagage"),
+        name: Joi.string().valid('TRC', 'CLC', 'TL', 'Tri bagage'),
         description: Joi.string()
     })
 };

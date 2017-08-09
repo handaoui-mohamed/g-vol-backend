@@ -1,21 +1,22 @@
 import Promise from 'bluebird';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
+import bcrypt from 'bcrypt';
 import APIError from '../helpers/APIError';
 
 /**
  * Account Schema
  */
-const funcs = ["TRC", "CLC", "TL", "Tri bagage"] ; 
-const func  = new mongoose.Schema({
+const funcs = ['TRC', 'CLC', 'TL', 'Tri bagage'];
+const func = new mongoose.Schema({
   name: {
-    type : String , 
-    enum: funcs, 
-    required : true 
-  }, 
-  description: String 
+    type: String,
+    enum: funcs,
+    required: true
+  },
+  description: String
 });
-const gender = ["male","female"] ; 
+const gender = ['male', 'female'];
 const AccountSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -30,30 +31,30 @@ const AccountSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    lowercase: true, 
-    unique : true 
+    lowercase: true,
+    unique: true
   },
   email: {
     type: String,
-    match: [/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Not valid email"],
+    match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Not valid email'],
     lowercase: true
   },
   phone: {
     type: String
   },
-  sexe : {
-    type: String, 
-    enum: gender, 
-    required : true 
+  sexe: {
+    type: String,
+    enum: gender,
+    required: true
   },
-  birthday : {
-    type : Date
+  birthday: {
+    type: Date
   },
   password: {
-    type : String 
+    type: String
   },
-  function : func, 
-  adress : String , 
+  function: func,
+  adress: String,
   createdAt: {
     type: Date,
     default: Date.now
@@ -68,11 +69,12 @@ const AccountSchema = new mongoose.Schema({
  */
 
 AccountSchema.set('toJSON', {
-     transform: function (doc, ret, options) {
-         ret.id = ret._id;
-         delete ret._id;
-         delete ret.__v;
-     }
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+    delete ret.password;
+  }
 });
 /**
  * Methods
@@ -113,6 +115,12 @@ AccountSchema.statics = {
       .skip(+skip)
       .limit(+limit)
       .exec();
+  },
+  hashPassword(password, rounds = 10) {
+    return bcrypt.hashSync(password, rounds);
+  },
+  comparePassword(password, hash) {
+    return bcrypt.compareSync(password, hash);
   }
 };
 

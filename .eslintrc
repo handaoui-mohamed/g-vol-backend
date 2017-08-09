@@ -1,12 +1,6 @@
 {
   "rules": {
-    "indent": [
-      2,
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
+    "indent": 0,
     "space-before-function-paren": [
       2,
       {
@@ -30,7 +24,8 @@
     ],
     "no-underscore-dangle": [
       0
-    ]
+    ],
+    "linebreak-style": 0
   },
   "env": {
     "node": true,
@@ -41,7 +36,7 @@
     "sourceType": "module"
   },
   "extends": [
-    // "eslint:recommended",
+    "eslint:recommended",
     "airbnb-base"
   ]
-}  
+}
