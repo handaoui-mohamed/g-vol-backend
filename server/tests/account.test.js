@@ -26,7 +26,7 @@ describe('## Account APIs', () => {
     email: 'user@gmail.com',
     sexe: 'female',
     birthday: '05/05/1988',
-    adress: 'user test town',
+    address: 'user test town',
     function: {
       name: 'TRC',
       description: 'description trc'
@@ -47,7 +47,7 @@ describe('## Account APIs', () => {
           expect(res.body.email).to.equal(account.email);
           expect(res.body.phone).to.equal(account.phone);
           expect(res.body.sexe).to.equal(account.sexe);
-          expect(res.body.adress).to.equal(account.adress);
+          expect(res.body.address).to.equal(account.address);
           expect(res.body.function.name).to.equal(account.function.name);
           expect(res.body.function.description).to.equal(account.function.description);
           account = res.body;
@@ -82,7 +82,7 @@ describe('## Account APIs', () => {
           expect(res.body.email).to.equal(account.email);
           expect(res.body.phone).to.equal(account.phone);
           expect(res.body.sexe).to.equal(account.sexe);
-          expect(res.body.adress).to.equal(account.adress);
+          expect(res.body.address).to.equal(account.address);
           expect(res.body.function.name).to.equal(account.function.name);
           expect(res.body.function.description).to.equal(account.function.description);
           done();
@@ -155,7 +155,7 @@ describe('## Account APIs', () => {
           expect(res.body.email).to.equal(account.email);
           expect(res.body.phone).to.equal(account.phone);
           expect(res.body.sexe).to.equal(account.sexe);
-          expect(res.body.adress).to.equal(account.adress);
+          expect(res.body.address).to.equal(account.address);
           expect(res.body.function.name).to.equal(account.function.name);
           expect(res.body.function.description).to.equal(account.function.description);
           done();

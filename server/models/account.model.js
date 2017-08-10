@@ -54,7 +54,7 @@ const AccountSchema = new mongoose.Schema({
     type: String
   },
   function: func,
-  adress: String,
+  address: String,
   createdAt: {
     type: Date,
     default: Date.now

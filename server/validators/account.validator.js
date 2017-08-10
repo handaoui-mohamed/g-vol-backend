@@ -8,7 +8,7 @@ const body = {
     email: Joi.string().email(),
     sexe: Joi.string().valid('male', 'female').required(),
     birthday: Joi.date(),
-    adress: Joi.string(),
+    address: Joi.string(),
     function: Joi.object({
         name: Joi.string().valid('TRC', 'CLC', 'TL', 'Tri bagage'),
         description: Joi.string()
