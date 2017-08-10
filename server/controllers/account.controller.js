@@ -88,7 +88,11 @@ function list(req, res, next) {
  */
 function remove(req, res, next) {
   const account = req.account;
-  account.remove()
+  if (account.id.toString() === req.jwtAccount.id) {
+    const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+    next(err);
+  } else
+    account.remove()
     .then(deletedAccount => res.json(deletedAccount))
     .catch(e => next(e));
 }
