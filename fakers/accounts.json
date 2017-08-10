@@ -1,0 +1,77 @@
+[{
+    "username": "adminuser",
+    "phone": "0217777777",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "user@gmail.com",
+    "sexe": "female",
+    "birthday": "05/05/1988",
+    "adress": "user test town",
+    "function": {
+      "name": "TRC",
+      "description": "description trc"
+    },
+    "role": "admin",
+    "password": "password"
+  },
+  {
+    "username": "username2",
+    "phone": "0217777777",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "user@gmail.com",
+    "sexe": "female",
+    "birthday": "05/05/1988",
+    "adress": "user test town",
+    "function": {
+      "name": "Tri bagage",
+      "description": "description tri bagage"
+    },
+    "role": "user",
+    "password": "password"
+  },
+  {
+    "username": "username3",
+    "phone": "0217777777",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "user@gmail.com",
+    "sexe": "male",
+    "birthday": "04/02/1988",
+    "adress": "user test town",
+    "function": {
+      "name": "CLC",
+      "description": "description clc"
+    },
+    "password": "password"
+  },
+  {
+    "username": "username4",
+    "phone": "0217777777",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "user@gmail.com",
+    "sexe": "female",
+    "birthday": "05/05/1988",
+    "adress": "user test town",
+    "function": {
+      "name": "TL",
+      "description": "description team leader"
+    },
+    "password": "password"
+  },
+  {
+    "username": "username4",
+    "phone": "0217777777",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "user@gmail.com",
+    "sexe": "male",
+    "birthday": "05/05/1988",
+    "adress": "user test town",
+    "function": {
+      "name": "TRC"
+    },
+    "password": "password"
+  }
+]
