@@ -1,90 +1,139 @@
-// import request from 'supertest-as-promised';
-// import httpStatus from 'http-status';
-// import jwt from 'jsonwebtoken';
-// import chai, { expect } from 'chai';
-// import app from '../../index';
-// import config from '../../config/config';
+import request from 'supertest-as-promised';
+import httpStatus from 'http-status';
+import jwt from 'jsonwebtoken';
+import chai, {
+  expect
+} from 'chai';
+import app from '../../index';
+import config from '../../config/config';
+import Account from '../models/account.model';
 
-// chai.config.includeStack = true;
+chai.config.includeStack = true;
 
-// describe('## Auth APIs', () => {
-//   const validUserCredentials = {
-//     username: 'react',
-//     password: 'express'
-//   };
+describe('## Auth APIs', () => {
+  let accountToDelete = {};
+  before((done) => {
+    const admin = {
+      username: 'admin',
+      phone: '0217777777',
+      firstname: 'firstname',
+      lastname: 'lastname',
+      email: 'user@gmail.com',
+      sexe: 'male',
+      birthday: '05/05/1988',
+      address: 'user test town',
+      role: 'admin',
+      function: {
+        name: 'CLC',
+        description: 'description clc'
+      },
+      password: '$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6'
+    };
+    Account.create(admin).then(() => {
+      Account.create({
+        username: 'accounttodelete',
+        firstname: 'firstname',
+        lastname: 'lastname',
+        sexe: 'male',
+        function: {
+          name: 'CLC'
+        },
+        password: 'password'
+      }).then((account) => {
+        accountToDelete = account;
+        done();
+      });
+    });
+  });
 
-//   const invalidUserCredentials = {
-//     username: 'react',
-//     password: 'IDontKnow'
-//   };
+  after((done) => {
+    Account.remove({
+      username: 'admin'
+    }).then(() => {
+      done();
+    });
+  });
 
-//   let jwtToken;
+  const validUserCredentials = {
+    username: 'admin',
+    password: 'password'
+  };
 
-//   describe('# POST /api/auth/login', () => {
-//     it('should return Authentication error', (done) => {
-//       request(app)
-//         .post('/api/auth/login')
-//         .send(invalidUserCredentials)
-//         .expect(httpStatus.UNAUTHORIZED)
-//         .then((res) => {
-//           expect(res.body.message).to.equal('Authentication error');
-//           done();
-//         })
-//         .catch(done);
-//     });
+  const invalidUserCredentials = {
+    username: 'username',
+    password: 'IDontKnow'
+  };
 
-//     it('should get valid JWT token', (done) => {
-//       request(app)
-//         .post('/api/auth/login')
-//         .send(validUserCredentials)
-//         .expect(httpStatus.OK)
-//         .then((res) => {
-//           expect(res.body).to.have.property('token');
-//           jwt.verify(res.body.token, config.jwtSecret, (err, decoded) => {
-//             expect(err).to.not.be.ok; // eslint-disable-line no-unused-expressions
-//             expect(decoded.username).to.equal(validUserCredentials.username);
-//             jwtToken = `Bearer ${res.body.token}`;
-//             done();
-//           });
-//         })
-//         .catch(done);
-//     });
-//   });
+  let jwtToken;
 
-//   describe('# GET /api/auth/random-number', () => {
-//     it('should fail to get random number because of missing Authorization', (done) => {
-//       request(app)
-//         .get('/api/auth/random-number')
-//         .expect(httpStatus.UNAUTHORIZED)
-//         .then((res) => {
-//           expect(res.body.message).to.equal('Unauthorized');
-//           done();
-//         })
-//         .catch(done);
-//     });
+  describe('# POST /api/auth/login', () => {
+    it('should return Authentication error', (done) => {
+      request(app)
+        .post('/api/auth/login')
+        .send(invalidUserCredentials)
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).to.equal('Authentication error');
+          done();
+        })
+        .catch(done);
+    });
 
-//     it('should fail to get random number because of wrong token', (done) => {
-//       request(app)
-//         .get('/api/auth/random-number')
-//         .set('Authorization', 'Bearer inValidToken')
-//         .expect(httpStatus.UNAUTHORIZED)
-//         .then((res) => {
-//           expect(res.body.message).to.equal('Unauthorized');
-//           done();
-//         })
-//         .catch(done);
-//     });
+    it('should get valid JWT token', (done) => {
+      request(app)
+        .post('/api/auth/login')
+        .send(validUserCredentials)
+        .expect(httpStatus.OK)
+        .then((res) => {
+          expect(res.body).to.have.property('token');
+          jwt.verify(res.body.token, config.jwtSecret, (err, decoded) => {
+            Account.get(decoded.id).then((account) => {
+              expect(err).to.not.be.ok; // eslint-disable-line no-unused-expressions
+              expect(account.username).to.equal(validUserCredentials.username);
+              validUserCredentials.id = account.id;
+              jwtToken = `Bearer ${res.body.token}`;
+              done();
+            });
+          });
+        })
+        .catch(done);
+    });
+  });
 
-//     it('should get a random number', (done) => {
-//       request(app)
-//         .get('/api/auth/random-number')
-//         .set('Authorization', jwtToken)
-//         .expect(httpStatus.OK)
-//         .then((res) => {
-//           expect(res.body.num).to.be.a('number');
-//           done();
-//         })
-//         .catch(done);
-//     });
-//   });
-// });
+  describe('# DELETE /api/accounts/:accountId', () => {
+    it('should fail to delete account because of missing Authorization', (done) => {
+      request(app)
+        .delete(`/api/accounts/${accountToDelete.id}`)
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).to.equal('Unauthorized');
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should fail to delete account because of wrong token', (done) => {
+      request(app)
+        .delete(`/api/accounts/${accountToDelete.id}`)
+        .set('Authorization', 'Bearer inValidToken')
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).to.equal('Unauthorized');
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should delete account', (done) => {
+      request(app)
+        .delete(`/api/accounts/${accountToDelete.id}`)
+        .set('Authorization', jwtToken)
+        .expect(httpStatus.OK)
+        .then((res) => {
+          expect(res.body.username).to.equal(accountToDelete.username);
+          done();
+        })
+        .catch(done);
+    });
+  });
+});

@@ -2,6 +2,7 @@ import express from 'express';
 import validate from 'express-validation';
 import paramValidation from '../validators/account.validator';
 import accountCtrl from '../controllers/account.controller';
+import authHandler from '../handlers/auth.handler';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -20,7 +21,7 @@ router.route('/:accountId')
   .put(validate(paramValidation.updateAccount), accountCtrl.update)
 
   /** DELETE /api/accounts/:accountId - Delete account */
-  .delete(accountCtrl.remove);
+  .delete(authHandler.authAndCheckRoles(['super-admin', 'admin']), accountCtrl.remove);
 
 /** Load account when API with accountId route parameter is hit */
 router.param('accountId', accountCtrl.load);

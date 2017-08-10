@@ -17,6 +17,7 @@ const func = new mongoose.Schema({
   description: String
 });
 const gender = ['male', 'female'];
+const roles = ['super-admin', 'admin', 'user'];
 const AccountSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -53,7 +54,15 @@ const AccountSchema = new mongoose.Schema({
   password: {
     type: String
   },
-  function: func,
+  role: {
+    type: String,
+    enum: roles,
+    default: 'user'
+  },
+  function: {
+    type: func,
+    required: true
+  },
   address: String,
   createdAt: {
     type: Date,
@@ -80,6 +89,9 @@ AccountSchema.set('toJSON', {
  * Methods
  */
 AccountSchema.method({
+  comparePasswords(password) {
+    return bcrypt.compareSync(password, this.password);
+  }
 });
 
 /**
@@ -109,18 +121,20 @@ AccountSchema.statics = {
    * @param {number} limit - Limit number of accounts to be returned.
    * @returns {Promise<Account[]>}
    */
-  list({ skip = 0, limit = 50 } = {}) {
+  list({
+    skip = 0,
+    limit = 50
+  } = {}) {
     return this.find()
-      .sort({ createdAt: -1 })
+      .sort({
+        createdAt: -1
+      })
       .skip(+skip)
       .limit(+limit)
       .exec();
   },
   hashPassword(password, rounds = 10) {
     return bcrypt.hashSync(password, rounds);
-  },
-  comparePassword(password, hash) {
-    return bcrypt.compareSync(password, hash);
   }
 };
 

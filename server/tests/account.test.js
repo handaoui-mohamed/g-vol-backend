@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import request from 'supertest-as-promised';
 import httpStatus from 'http-status';
-import chai, { expect } from 'chai';
+import chai, {
+  expect
+} from 'chai';
 import app from '../../index';
 
 chai.config.includeStack = true;
@@ -133,31 +135,13 @@ describe('## Account APIs', () => {
     it('should get all accounts (with limit and skip)', (done) => {
       request(app)
         .get('/api/accounts')
-        .query({ limit: 10, skip: 1 })
+        .query({
+          limit: 10,
+          skip: 1
+        })
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body).to.be.an('array');
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# DELETE /api/accounts/', () => {
-    it('should delete account', (done) => {
-      request(app)
-        .delete(`/api/accounts/${account.id}`)
-        .expect(httpStatus.OK)
-        .then((res) => {
-          expect(res.body.username).to.equal(account.username);
-          expect(res.body.firstname).to.equal(account.firstname);
-          expect(res.body.lastname).to.equal(account.lastname);
-          expect(res.body.email).to.equal(account.email);
-          expect(res.body.phone).to.equal(account.phone);
-          expect(res.body.sexe).to.equal(account.sexe);
-          expect(res.body.address).to.equal(account.address);
-          expect(res.body.function.name).to.equal(account.function.name);
-          expect(res.body.function.description).to.equal(account.function.description);
           done();
         })
         .catch(done);

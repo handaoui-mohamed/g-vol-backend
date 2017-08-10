@@ -24,7 +24,9 @@ function get(req, res) {
 
 // Create new account
 function create(req, res, next) {
-  Account.findOne({ username: req.body.username.toLowerCase() }).then((result) => {
+  Account.findOne({
+    username: req.body.username.toLowerCase()
+  }).then((result) => {
     if (result) {
       const err = new APIError('Username already exists', httpStatus.BAD_REQUEST, true);
       next(err);
@@ -69,8 +71,13 @@ function update(req, res, next) {
  * @returns {Account[]}
  */
 function list(req, res, next) {
-  const { limit = 50, skip = 0 } = req.query;
-  Account.list({ limit, skip })
+  const {
+    limit = 50, skip = 0
+  } = req.query;
+  Account.list({
+      limit,
+      skip
+    })
     .then(accounts => res.json(accounts))
     .catch(e => next(e));
 }
@@ -86,4 +93,11 @@ function remove(req, res, next) {
     .catch(e => next(e));
 }
 
-export default { load, get, create, update, list, remove };
+export default {
+  load,
+  get,
+  create,
+  update,
+  list,
+  remove
+};
