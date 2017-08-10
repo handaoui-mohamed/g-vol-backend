@@ -5,6 +5,7 @@ import chai, {
   expect
 } from 'chai';
 import app from '../../index';
+import Account from '../models/account.model';
 
 chai.config.includeStack = true;
 
@@ -35,6 +36,14 @@ describe('## Account APIs', () => {
     },
     password: 'passwordee'
   };
+
+  after((done) => {
+    Account.remove({
+      username: 'username'
+    }).then(() => {
+      done();
+    });
+  });
 
   describe('# POST /api/accounts', () => {
     it('should create a new account', (done) => {
