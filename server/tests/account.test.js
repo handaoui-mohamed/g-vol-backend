@@ -34,14 +34,62 @@ describe('## Account APIs', () => {
       name: 'TRC',
       description: 'description trc'
     },
-    password: 'passwordee'
+    password: 'password'
   };
+
+  before((done) => {
+    const admin = {
+      username: 'admin',
+      phone: '0217777777',
+      firstname: 'firstname',
+      lastname: 'lastname',
+      email: 'user@gmail.com',
+      sexe: 'male',
+      birthday: '05/05/1988',
+      address: 'user test town',
+      role: 'admin',
+      function: {
+        name: 'CLC',
+        description: 'description clc'
+      },
+      password: '$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6'
+    };
+    Account.create(admin).then(() => {
+      done();
+    });
+  });
 
   after((done) => {
     Account.remove({
-      username: 'username'
+      username: 'admin'
     }).then(() => {
-      done();
+      Account.remove({
+        username: 'username'
+      }).then(() => {
+        done();
+      });
+    });
+  });
+
+  const validUserCredentials = {
+    username: 'admin',
+    password: 'password'
+  };
+
+  let jwtToken;
+
+  describe('# POST /api/auth/login', () => {
+    it('should login with Admin', (done) => {
+      request(app)
+        .post('/api/auth/login')
+        .send(validUserCredentials)
+        .expect(httpStatus.OK)
+        .then((res) => {
+          expect(res.body).to.have.property('token');
+          jwtToken = `Bearer ${res.body.token}`;
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -49,6 +97,7 @@ describe('## Account APIs', () => {
     it('should create a new account', (done) => {
       request(app)
         .post('/api/accounts')
+        .set('Authorization', jwtToken)
         .send(account)
         .expect(httpStatus.CREATED)
         .then((res) => {
@@ -70,6 +119,7 @@ describe('## Account APIs', () => {
     it('should not create a new account', (done) => {
       request(app)
         .post('/api/accounts')
+        .set('Authorization', jwtToken)
         .send(account)
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
@@ -85,6 +135,7 @@ describe('## Account APIs', () => {
       // console.log(account);
       request(app)
         .get(`/api/accounts/${account.id}`)
+        .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body.username).to.equal(account.username);
@@ -105,6 +156,7 @@ describe('## Account APIs', () => {
       request(app)
         .get('/api/accounts/56c787ccc67fc16ccc1aeaff')
         .expect(httpStatus.NOT_FOUND)
+        .set('Authorization', jwtToken)
         .then((res) => {
           expect(res.body.message).to.equal('Not Found');
           done();
@@ -118,6 +170,7 @@ describe('## Account APIs', () => {
       account.firstname = 'new firstname';
       request(app)
         .put(`/api/accounts/${account.id}`)
+        .set('Authorization', jwtToken)
         .send(account)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -133,6 +186,7 @@ describe('## Account APIs', () => {
     it('should get all accounts', (done) => {
       request(app)
         .get('/api/accounts')
+        .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body).to.be.an('array');
@@ -144,6 +198,7 @@ describe('## Account APIs', () => {
     it('should get all accounts (with limit and skip)', (done) => {
       request(app)
         .get('/api/accounts')
+        .set('Authorization', jwtToken)
         .query({
           limit: 10,
           skip: 1

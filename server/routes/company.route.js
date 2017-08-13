@@ -2,25 +2,26 @@ import express from 'express';
 import validate from 'express-validation';
 import paramValidation from '../validators/company.validator';
 import companyCtrl from '../controllers/company.controller';
+import authHandler from '../handlers/auth.handler';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
   /** GET /api/companies - Get list of companies */
-  .get(companyCtrl.list)
+  .get(authHandler.authenticate(), companyCtrl.list)
 
   /** POST /api/companis - Create new company */
-  .post(validate(paramValidation.createCompany), companyCtrl.create);
+  .post(authHandler.authAndCheckRoles(['super-admin', 'admin']), validate(paramValidation.createCompany), companyCtrl.create);
 
 router.route('/:companyId')
   /** GET /api/companies/:companyId - Get company */
-  .get(companyCtrl.get)
+  .get(authHandler.authenticate(), companyCtrl.get)
 
   /** PUT /api/companis/:companyId - Update company */
-  .put(validate(paramValidation.updateCompany), companyCtrl.update)
+  .put(authHandler.authAndCheckRoles(['super-admin', 'admin']), validate(paramValidation.updateCompany), companyCtrl.update)
 
   /** DELETE /api/companies/:companyId - Delete company */
-  .delete(companyCtrl.remove);
+  .delete(authHandler.authAndCheckRoles(['super-admin', 'admin']), companyCtrl.remove);
 
 /** Load company when API with companyId route parameter is hit */
 router.param('companyId', companyCtrl.load);
