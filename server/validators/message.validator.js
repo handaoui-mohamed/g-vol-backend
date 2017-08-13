@@ -1,11 +1,17 @@
-import Joi from 'joi' ;
+import Joi from 'joi';
 import JoiObjectid from 'joi-objectid';
 
 Joi.objectId = JoiObjectid(Joi);
 
 const body = {
-    accountId : Joi.objectId().required(),
+    accountId: Joi.objectId().required(),
     content: Joi.string().required()
 }
 
-export default body ; 
+export default {
+    // POST /api/:Idflight/messages
+    createMessage: {
+        body: body
+    },
+
+};

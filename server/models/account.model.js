@@ -7,7 +7,7 @@ import APIError from '../helpers/APIError';
 /**
  * Account Schema
  */
-const funcs = ['TRC', 'CLC', 'TL', 'Tri bagage'];
+const funcs = ['superadmin', 'admin','trc', 'clc', 'tl', 'tb'];
 const func = new mongoose.Schema({
   name: {
     type: String,
@@ -17,7 +17,6 @@ const func = new mongoose.Schema({
   description: String
 });
 const gender = ['male', 'female'];
-const roles = ['super-admin', 'admin', 'user'];
 const AccountSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -53,11 +52,6 @@ const AccountSchema = new mongoose.Schema({
   },
   password: {
     type: String
-  },
-  role: {
-    type: String,
-    enum: roles,
-    default: 'user'
   },
   function: {
     type: func,

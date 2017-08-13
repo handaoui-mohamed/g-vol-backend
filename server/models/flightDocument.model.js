@@ -15,7 +15,7 @@ const FlightDocument = new mongoose.Schema({
         lowercase: true
     },
     status: {
-        type: boolean,
+        type: Boolean,
         default: false
     },
     createdAt: {

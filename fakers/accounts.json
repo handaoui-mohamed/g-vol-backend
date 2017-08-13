@@ -1,5 +1,5 @@
 [{
-    "username": "adminuser",
+    "username": "usersuperadmin",
     "phone": "0217777777",
     "firstname": "firstname",
     "lastname": "lastname",
@@ -8,14 +8,27 @@
     "birthday": "05/05/1988",
     "adress": "user test town",
     "function": {
-      "name": "TRC",
-      "description": "description trc"
+      "name": "superadmin",
+      "description": "description admin"
     },
-    "role": "admin",
+    "password": "password"
+  },{
+    "username": "useradmin",
+    "phone": "0217777777",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "user@gmail.com",
+    "sexe": "female",
+    "birthday": "05/05/1988",
+    "adress": "user test town",
+    "function": {
+      "name": "admin",
+      "description": "description admin"
+    },
     "password": "password"
   },
   {
-    "username": "username2",
+    "username": "usertb",
     "phone": "0217777777",
     "firstname": "firstname",
     "lastname": "lastname",
@@ -24,14 +37,13 @@
     "birthday": "05/05/1988",
     "adress": "user test town",
     "function": {
-      "name": "Tri bagage",
+      "name": "tb",
       "description": "description tri bagage"
     },
-    "role": "user",
     "password": "password"
   },
   {
-    "username": "username3",
+    "username": "userclc",
     "phone": "0217777777",
     "firstname": "firstname",
     "lastname": "lastname",
@@ -40,13 +52,13 @@
     "birthday": "04/02/1988",
     "adress": "user test town",
     "function": {
-      "name": "CLC",
+      "name": "clc",
       "description": "description clc"
     },
     "password": "password"
   },
   {
-    "username": "username4",
+    "username": "usertl",
     "phone": "0217777777",
     "firstname": "firstname",
     "lastname": "lastname",
@@ -55,13 +67,13 @@
     "birthday": "05/05/1988",
     "adress": "user test town",
     "function": {
-      "name": "TL",
+      "name": "tl",
       "description": "description team leader"
     },
     "password": "password"
   },
   {
-    "username": "username4",
+    "username": "usertrc",
     "phone": "0217777777",
     "firstname": "firstname",
     "lastname": "lastname",
@@ -70,7 +82,7 @@
     "birthday": "05/05/1988",
     "adress": "user test town",
     "function": {
-      "name": "TRC"
+      "name": "trc"
     },
     "password": "password"
   }

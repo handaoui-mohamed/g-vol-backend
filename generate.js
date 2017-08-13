@@ -17,9 +17,8 @@ export default {
           sexe: 'male',
           birthday: '05/05/1988',
           address: 'user test town',
-          role: 'super-admin',
           function: {
-            name: 'CLC'
+            name: 'superadmin'
           },
           password: '$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6'
         };

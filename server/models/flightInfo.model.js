@@ -8,7 +8,7 @@ const FlightInfo = new mongoose.Schema({
         default: 'Flight Info'
     },
     status: {
-        type: boolean,
+        type: Boolean,
         default: false
     },
     createdAt: {

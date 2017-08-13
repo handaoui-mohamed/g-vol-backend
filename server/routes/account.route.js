@@ -21,7 +21,7 @@ router.route('/:accountId')
   .put(validate(paramValidation.updateAccount), accountCtrl.update)
 
   /** DELETE /api/accounts/:accountId - Delete account */
-  .delete(authHandler.authAndCheckRoles(['super-admin', 'admin']), accountCtrl.remove);
+  .delete(authHandler.authAndCheckRoles(['superadmin', 'admin']), accountCtrl.remove);
 
 /** Load account when API with accountId route parameter is hit */
 router.param('accountId', accountCtrl.load);

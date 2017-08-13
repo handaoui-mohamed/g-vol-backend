@@ -7,7 +7,7 @@ const OffloadList = new mongoose.Schema({
         lowercase: true
     },
     status: {
-        type: boolean,
+        type: Boolean,
         default: false
     },
     createdAt: {
@@ -31,7 +31,7 @@ const OffloadList = new mongoose.Schema({
                 passengerType: {
                     type: String,
                     required: true,
-                    enum: ['M', 'F', 'C', 'I'],
+                    enum: ['male', 'female', 'chils', 'infant'],
                 },
                 totalWeight: {
                     type: Number,
@@ -39,7 +39,7 @@ const OffloadList = new mongoose.Schema({
                 },
                 offloadBaggage: {
                     type: [{
-                        pieceID: {
+                        pieceId: {
                             type: String,
                             lowercase: true
                         },

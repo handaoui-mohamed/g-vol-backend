@@ -13,7 +13,7 @@ function load(req, res, next, id) {
     })
     .catch(e => next(e));
 }
-
+  
 /**
  * Get account
  * @returns {Account}

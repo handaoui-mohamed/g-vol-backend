@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 import APIError from '../helpers/APIError';
-import FlightDocument from './flightDocument.model'; 
-import FlightInfo from './flightInfo.model' ; 
+import FlightDocument from './flightDocument.model';
+import FlightInfo from './flightInfo.model';
 import OffloadList from './offloadList.model'
 import PaxReport from './paxReport.model'
 import MessageSchema from './message.model'
@@ -13,7 +13,7 @@ import BaggageReport from './baggageReport.model'
 /**
  * Flight Status enum
  */
-const flightStatus = ['prevu', 'en cours', 'cloture'];
+const flightStatus = ['nouveau', 'en cours', 'cloture'];
 
 /**
  * Flight Schema
@@ -22,7 +22,6 @@ const FlightSchema = new mongoose.Schema({
     flightNumber: {
         type: String,
         required: true,
-        lowercase: true
     },
     arrivalDate: {
         type: Date,
@@ -32,7 +31,7 @@ const FlightSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    ac_type: {
+    acType: {
         type: String,
         required: true,
         lowercase: true
@@ -75,7 +74,6 @@ const FlightSchema = new mongoose.Schema({
     configuration: {
         type: String,
         lowercase: true,
-        required: true
     },
     registration: {
         type: String,
@@ -109,8 +107,7 @@ const FlightSchema = new mongoose.Schema({
                 type: OffloadList
             },
             others: [FlightDocument]
-        },
-        required: true
+        }
     },
     company: {
         type: mongoose.Schema.Types.ObjectId,
@@ -118,46 +115,47 @@ const FlightSchema = new mongoose.Schema({
     },
     messages: [MessageSchema]
 
-}); 
+});
 
 FlightSchema.set('toJSON', {
-  transform: (doc, ret) => {
-    ret.id = ret._id;
-    delete ret._id;
-  }
+    transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    }
 });
 
 FlightSchema.statics = {
-  /**
-   * Get flight
-   * @param {ObjectId} id - The objectId of flight.
-   * @returns {Promise<Account, APIError>}
-   */
-  get(id) {
-    return this.findById(id)
-      .exec()
-      .then((flight) => {
-        if (flight) {
-          return flight;
-        }
-        const err = new APIError('No such flight exists!', httpStatus.NOT_FOUND);
-        return Promise.reject(err);
-      });
-  },
+    /**
+     * Get flight
+     * @param {ObjectId} id - The objectId of flight.
+     * @returns {Promise<Account, APIError>}
+     */
+    get(id) {
+        return this.findById(id)
+            .exec()
+            .then((flight) => {
+                if (flight) {
+                    return flight;
+                }
+                const err = new APIError('No such flight exists!', httpStatus.NOT_FOUND);
+                return Promise.reject(err);
+            });
+    },
 
-  /**
-   * List flights in descending order of 'createdAt' timestamp.
-   * @param {number} skip - Number of flights to be skipped.
-   * @param {number} limit - Limit number of flights to be returned.
-   * @returns {Promise<Account[]>}
-   */
-  list({ skip = 0, limit = 50 } = {}) {
-    return this.find()
-      .sort({ createdAt: -1 })
-      .skip(+skip)
-      .limit(+limit)
-      .exec();
-  },
+    /**
+     * List flights in descending order of 'createdAt' timestamp.
+     * @param {number} skip - Number of flights to be skipped.
+     * @param {number} limit - Limit number of flights to be returned.
+     * @returns {Promise<Account[]>}
+     */
+    list({ skip = 0, limit = 50 } = {}) {
+        return this.find()
+            .sort({ createdAt: -1 })
+            .skip(+skip)
+            .limit(+limit)
+            .exec();
+    },
 };
-
+FlightSchema.index({ flightNumber: 1, departureDate: 1 }, { unique: true });
 export default mongoose.model('Flight', FlightSchema);

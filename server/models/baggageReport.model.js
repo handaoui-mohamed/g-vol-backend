@@ -8,7 +8,7 @@ const BaggageReport = new mongoose.Schema({
         lowercase: true
     },
     status: {
-        type: boolean,
+        type: Boolean,
         default: false
     },
     createdAt: {
@@ -22,7 +22,7 @@ const BaggageReport = new mongoose.Schema({
                 lowercase: true
             },
             nbPieces: Number,
-            UldNumber: {
+            uldNumber: {
                 type: String,
                 lowercase: true
             },

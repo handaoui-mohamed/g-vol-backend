@@ -38,17 +38,32 @@ function authAndCheckRoles(acceptedRoles) {
       err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
     }
     if (req.jwtAccount) {
-      Account.get(req.jwtAccount.id).then((account) => {
-        if (!acceptedRoles.includes(account.role)) {
-          err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
-        }
-      });
+      if (!acceptedRoles.includes(req.jwtAccount.function)) {
+        err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
+      }
     }
     return next(err);
   };
 }
 
+/**
+ * 
+ * @param {acceptedPropreties} acceptedPropreties {'clc':['comment'],'trc':['etd','eta']}
+ */
+function checkAcceptedPropreties(acceptedPropreties) {
+  return (req, res, next) => {
+    let err;
+    req.accountPropreties = acceptedPropreties[req.jwtAccount.function];
+      if (!req.acceptedPropreties) {
+        err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
+        next(err);
+      }
+      else next();
+  }
+}
+
 export default {
   authenticate,
-  authAndCheckRoles
+  authAndCheckRoles,
+  checkAcceptedPropreties
 };
