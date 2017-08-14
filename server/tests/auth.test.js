@@ -13,49 +13,23 @@ chai.config.includeStack = true;
 describe('## Auth APIs', () => {
   let accountToDelete = {};
   before((done) => {
-    const admin = {
-      username: 'admin',
-      phone: '0217777777',
+    Account.create({
+      username: 'accounttodelete',
       firstname: 'firstname',
       lastname: 'lastname',
-      email: 'user@gmail.com',
       sexe: 'male',
-      birthday: '05/05/1988',
-      address: 'user test town',
-      role: 'admin',
       function: {
-        name: 'CLC',
-        description: 'description clc'
+        name: 'clc'
       },
-      password: '$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6'
-    };
-    Account.create(admin).then(() => {
-      Account.create({
-        username: 'accounttodelete',
-        firstname: 'firstname',
-        lastname: 'lastname',
-        sexe: 'male',
-        function: {
-          name: 'CLC'
-        },
-        password: 'password'
-      }).then((account) => {
-        accountToDelete = account;
-        done();
-      });
-    });
-  });
-
-  after((done) => {
-    Account.remove({
-      username: 'admin'
-    }).then(() => {
+      password: 'password'
+    }).then((account) => {
+      accountToDelete = account;
       done();
-    });
+    }); 
   });
 
   const validUserCredentials = {
-    username: 'admin',
+    username: 'useradmin',
     password: 'password'
   };
 
@@ -106,7 +80,7 @@ describe('## Auth APIs', () => {
         .delete(`/api/accounts/${accountToDelete.id}`)
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
-          expect(res.body.message).to.equal('Unauthorized');
+          expect(res.body.message).to.equal('UNAUTHORIZED');
           done();
         })
         .catch(done);
@@ -118,7 +92,7 @@ describe('## Auth APIs', () => {
         .set('Authorization', 'Bearer inValidToken')
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
-          expect(res.body.message).to.equal('Unauthorized');
+          expect(res.body.message).to.equal('UNAUTHORIZED');
           done();
         })
         .catch(done);

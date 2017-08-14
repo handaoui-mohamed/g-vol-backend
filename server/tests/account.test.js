@@ -31,48 +31,21 @@ describe('## Account APIs', () => {
     birthday: '05/05/1988',
     address: 'user test town',
     function: {
-      name: 'TRC',
-      description: 'description trc'
+      name: 'trc'
     },
     password: 'password'
   };
 
-  before((done) => {
-    const admin = {
-      username: 'admin',
-      phone: '0217777777',
-      firstname: 'firstname',
-      lastname: 'lastname',
-      email: 'user@gmail.com',
-      sexe: 'male',
-      birthday: '05/05/1988',
-      address: 'user test town',
-      role: 'admin',
-      function: {
-        name: 'CLC',
-        description: 'description clc'
-      },
-      password: '$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6'
-    };
-    Account.create(admin).then(() => {
+  after((done) => {
+    Account.remove({
+      username: 'username'
+    }).then(() => {
       done();
     });
   });
 
-  after((done) => {
-    Account.remove({
-      username: 'admin'
-    }).then(() => {
-      Account.remove({
-        username: 'username'
-      }).then(() => {
-        done();
-      });
-    });
-  });
-
   const validUserCredentials = {
-    username: 'admin',
+    username: 'useradmin',
     password: 'password'
   };
 
@@ -132,7 +105,6 @@ describe('## Account APIs', () => {
 
   describe('# GET /api/accounts/:accountId', () => {
     it('should get account details', (done) => {
-      // console.log(account);
       request(app)
         .get(`/api/accounts/${account.id}`)
         .set('Authorization', jwtToken)

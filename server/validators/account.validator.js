@@ -10,7 +10,7 @@ const body = {
   birthday: Joi.date(),
   address: Joi.string(),
   function: Joi.object({
-    name: Joi.string().valid('TRC', 'CLC', 'TL', 'Tri bagage'),
+    name: Joi.string().valid('trc', 'clc', 'tl', 'tb', 'admin'),
     description: Joi.string()
   }).required()
 };

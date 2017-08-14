@@ -39,15 +39,13 @@ function update(req, res, next) {
   const flight = req.flight;
   const data = req.body;
 
-  req.accountPropsPromise.then((acceptedProps) => {
-    acceptedProps.forEach((proprety) => {
-      flight.set(proprety, data[proprety]);
-    });
-
-    flight.save()
-      .then(savedFlight => res.json(savedFlight))
-      .catch(e => next(e));
+  req.acceptedProps.forEach((proprety) => {
+    flight.set(proprety, data[proprety]);
   });
+
+  flight.save()
+    .then(savedFlight => res.json(savedFlight))
+    .catch(e => next(e));
 }
 
 /**

@@ -11,7 +11,7 @@
       "name": "superadmin",
       "description": "description admin"
     },
-    "password": "password"
+    "password": "$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6"
   },{
     "username": "useradmin",
     "phone": "0217777777",
@@ -25,7 +25,7 @@
       "name": "admin",
       "description": "description admin"
     },
-    "password": "password"
+    "password": "$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6"
   },
   {
     "username": "usertb",
@@ -40,7 +40,7 @@
       "name": "tb",
       "description": "description tri bagage"
     },
-    "password": "password"
+    "password": "$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6"
   },
   {
     "username": "userclc",
@@ -55,7 +55,7 @@
       "name": "clc",
       "description": "description clc"
     },
-    "password": "password"
+    "password": "$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6"
   },
   {
     "username": "usertl",
@@ -70,7 +70,7 @@
       "name": "tl",
       "description": "description team leader"
     },
-    "password": "password"
+    "password": "$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6"
   },
   {
     "username": "usertrc",
@@ -84,6 +84,6 @@
     "function": {
       "name": "trc"
     },
-    "password": "password"
+    "password": "$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6"
   }
 ]

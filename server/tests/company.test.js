@@ -10,21 +10,10 @@ import Account from '../models/account.model';
 
 chai.config.includeStack = true;
 
-/**
- * root level hooks
- */
-after((done) => {
-  // required because https://github.com/Automattic/mongoose/issues/1251#issuecomment-65793092
-  mongoose.models = {};
-  mongoose.modelSchemas = {};
-  mongoose.connection.close();
-  done();
-});
-
 describe('## Company APIs', () => {
   let company = {
-    name: 'turkish airlines',
-    code: 'tk',
+    name: 'swissport',
+    code: 'sp',
     checklist: [
       'document1',
       'document2',
@@ -33,42 +22,16 @@ describe('## Company APIs', () => {
     ]
   };
 
-  before((done) => {
-    const admin = {
-      username: 'admin',
-      phone: '0217777777',
-      firstname: 'firstname',
-      lastname: 'lastname',
-      email: 'user@gmail.com',
-      sexe: 'male',
-      birthday: '05/05/1988',
-      address: 'user test town',
-      role: 'admin',
-      function: {
-        name: 'CLC',
-        description: 'description clc'
-      },
-      password: '$2a$10$DZel0LYKKMTfYeNsSDOT3.dNgVvGbk20e1X.IsiqAIy9pMy4tAXm6'
-    };
-    Account.create(admin).then(() => {
+  after((done) => {
+    Company.remove({
+      code: 'sp'
+    }).then(() => {
       done();
     });
   });
 
-  after((done) => {
-    Account.remove({
-      username: 'admin'
-    }).then(() => {
-      Company.remove({
-        code: 'tk'
-      }).then(() => {
-        done();
-      });
-    });
-  });
-
   const validUserCredentials = {
-    username: 'admin',
+    username: 'useradmin',
     password: 'password'
   };
 
@@ -121,13 +84,12 @@ describe('## Company APIs', () => {
   });
 
   describe('# GET /api/companies/:companyId', () => {
-    it('should get account details', (done) => {
+    it('should get company details', (done) => {
       request(app)
         .get(`/api/companies/${company.id}`)
         .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {
-          console.log(res.body);
           expect(res.body.name).to.equal(company.name);
           expect(res.body.code).to.equal(company.code);
           expect(res.body.checklist.length).to.equal(company.checklist.length);
@@ -170,7 +132,7 @@ describe('## Company APIs', () => {
   describe('# GET /api/companies', () => {
     it('should get all companies', (done) => {
       request(app)
-        .get('/api/accounts')
+        .get('/api/companies')
         .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {

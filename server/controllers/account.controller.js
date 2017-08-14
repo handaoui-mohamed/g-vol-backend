@@ -13,7 +13,7 @@ function load(req, res, next, id) {
     })
     .catch(e => next(e));
 }
-  
+
 /**
  * Get account
  * @returns {Account}
@@ -88,9 +88,14 @@ function list(req, res, next) {
  */
 function remove(req, res, next) {
   const account = req.account;
+  let err;
+  if (!req.jwtAccount) {
+    err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+    return next(err);
+  }
   if (account.id.toString() === req.jwtAccount.id) {
-    const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
-    next(err);
+    err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+    return next(err);
   } else
     account.remove()
     .then(deletedAccount => res.json(deletedAccount))
