@@ -31,18 +31,27 @@ function authAndCheckRoles(acceptedRoles) {
   return (req, res, next) => {
     let token;
     let err;
-    if (req.headers.authorization) token = req.headers.authorization.split(' ')[1];
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(' ')[1];
+    }
     try {
       req.jwtAccount = jwt.verify(token, config.jwtSecret);
     } catch (e) {
-      err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
+      res.status(httpStatus.UNAUTHORIZED).json({
+        "message": 'Unauthorized'
+      });
     }
     if (req.jwtAccount) {
-      if (!acceptedRoles.includes(req.jwtAccount.function)) {
-        err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
-      }
+      req.accountPromise = Account.get(req.jwtAccount.id).then((account) => {
+        if (!acceptedRoles.includes(account.function.name)) {
+          res.status(httpStatus.UNAUTHORIZED).json({
+            message: 'Unauthorized'
+          });
+        }
+        return account;
+      });
     }
-    return next(err);
+    return next();
   };
 }
 
@@ -53,12 +62,16 @@ function authAndCheckRoles(acceptedRoles) {
 function checkAcceptedPropreties(acceptedPropreties) {
   return (req, res, next) => {
     let err;
-    req.accountPropreties = acceptedPropreties[req.jwtAccount.function];
-      if (!req.acceptedPropreties) {
-        err = new APIError('Unauthorized', httpStatus.UNAUTHORIZED, true);
-        next(err);
+    req.accountPropsPromise = req.accountPromise.then((account) => {
+      let acceptedProps = acceptedPropreties[account.function.name];
+      if (!acceptedProps) {
+        res.status(httpStatus.UNAUTHORIZED).json({
+          "message": 'Unauthorized'
+        });
       }
-      else next();
+      return acceptedProps;
+    });
+    return next();
   }
 }
 

@@ -6,12 +6,12 @@ import APIError from '../helpers/APIError';
  * Load flight and append to req.
  */
 function load(req, res, next, id) {
-    Flight.get(id)
-        .then((flight) => {
-            req.flight = flight; // eslint-disable-line no-param-reassign
-            return next();
-        })
-        .catch(e => next(e));
+  Flight.get(id)
+    .then((flight) => {
+      req.flight = flight; // eslint-disable-line no-param-reassign
+      return next();
+    })
+    .catch(e => next(e));
 }
 
 /**
@@ -19,15 +19,15 @@ function load(req, res, next, id) {
  * @returns {Flight}
  */
 function get(req, res) {
-    return res.json(req.flight);
+  return res.json(req.flight);
 }
 
 // Create new flight
 function create(req, res, next) {
-    const flight = new Flight(req.body);
-    flight.save()
-        .then(savedFlight => res.status(httpStatus.CREATED).json(savedFlight))
-        .catch(e => next(e));
+  const flight = new Flight(req.body);
+  flight.save()
+    .then(savedFlight => res.status(httpStatus.CREATED).json(savedFlight))
+    .catch(e => next(e));
 }
 
 /**
@@ -36,15 +36,18 @@ function create(req, res, next) {
  * @returns {Flight}
  */
 function update(req, res, next) {
-    const flight = req.flight;
-    const data = req.body;
-    const accepetedPropreties = req.accepetedPropreties;
-    accepetedPropreties.forEach((proprety) => {
-        flight.set(proprety, data[proprety]);
-    })
+  const flight = req.flight;
+  const data = req.body;
+
+  req.accountPropsPromise.then((acceptedProps) => {
+    acceptedProps.forEach((proprety) => {
+      flight.set(proprety, data[proprety]);
+    });
+
     flight.save()
-        .then(savedFlight => res.json(savedFlight))
-        .catch(e => next(e));
+      .then(savedFlight => res.json(savedFlight))
+      .catch(e => next(e));
+  });
 }
 
 /**
@@ -54,15 +57,15 @@ function update(req, res, next) {
  * @returns {Flight[]}
  */
 function list(req, res, next) {
-    const {
+  const {
     limit = 50, skip = 0
   } = req.query;
-    Flight.list({
-        limit,
-        skip
+  Flight.list({
+      limit,
+      skip
     })
-        .then(flights => res.json(flights))
-        .catch(e => next(e));
+    .then(flights => res.json(flights))
+    .catch(e => next(e));
 }
 
 /**
@@ -70,19 +73,17 @@ function list(req, res, next) {
  * @returns {Flight}
  */
 function remove(req, res, next) {
-    const flight = req.flight;
-    flight.remove()
-        .then(deletedFlight => res.json(deletedFlight))
-        .catch(e => next(e));
+  const flight = req.flight;
+  flight.remove()
+    .then(deletedFlight => res.json(deletedFlight))
+    .catch(e => next(e));
 }
 
 export default {
-    load,
-    get,
-    create,
-    update,
-    list,
-    remove
+  load,
+  get,
+  create,
+  update,
+  list,
+  remove
 };
-
-

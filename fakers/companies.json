@@ -1,0 +1,37 @@
+[{
+    "name": "qatar airways",
+    "code": "qr",
+    "checklist": [
+      "Load sheet signed by Captain",
+      "Load plan signed by Ramp Supervisor",
+      "NOTOC",
+      "Fuel Docket",
+      "HBSD",
+      "Operational Msgs (IN/OUT)",
+      "Other documents (TRC checklist, Offload list...)"
+    ]
+  },
+  {
+    "name": "turkish airlines",
+    "code": "tk",
+    "checklist": [
+      "Load sheet signed by Captain and TRC",
+      "Load plan signed by Ramp Supervisor",
+      "NOTOC",
+      "Fuel info",
+      "HBMD",
+      "Bingo sheet",
+      "Passenger",
+      "Operational Msgs (IN/OUT)",
+      "Other documents (TRC checklist, Offload list...)"
+    ]
+  },
+  {
+    "name": "iberia",
+    "code": "ib",
+    "checklist": [
+      "TRC CHECK SHEET + Flight INFO",
+      "Load sheet signed by Flight Dispatcher and Ramp Supervisor"
+    ]
+  }
+]

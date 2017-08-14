@@ -1,5 +1,6 @@
 import fs from "fs";
 import Account from "./server/models/account.model";
+import Company from "./server/models/company.model";
 
 export default {
   generateAdmin() {
@@ -35,10 +36,17 @@ export default {
       if (err) throw err;
       var accounts = JSON.parse(data);
       Account.collection.insertMany(accounts, (err, r) => {
-        console.log('\n   ---- Fakers account succefully created');
+        console.log('\n   ---- Fakers accounts succefully created');
       })
     });
 
     console.log('\n   1.2- Creating companies fakers....');
+    fs.readFile('./fakers/companies.json', 'utf8', function (err, data) {
+      if (err) throw err;
+      var companies = JSON.parse(data);
+      Company.collection.insertMany(companies, (err, r) => {
+        console.log('\n   ---- Fakers companies succefully created');
+      })
+    });
   }
 }

@@ -11,17 +11,17 @@ router.route('/')
   .get(authHandler.authenticate(), companyCtrl.list)
 
   /** POST /api/companis - Create new company */
-  .post(authHandler.authAndCheckRoles(['super-admin', 'admin']), validate(paramValidation.createCompany), companyCtrl.create);
+  .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createCompany), companyCtrl.create);
 
 router.route('/:companyId')
   /** GET /api/companies/:companyId - Get company */
   .get(authHandler.authenticate(), companyCtrl.get)
 
   /** PUT /api/companis/:companyId - Update company */
-  .put(authHandler.authAndCheckRoles(['super-admin', 'admin']), validate(paramValidation.updateCompany), companyCtrl.update)
+  .put(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.updateCompany), companyCtrl.update)
 
   /** DELETE /api/companies/:companyId - Delete company */
-  .delete(authHandler.authAndCheckRoles(['super-admin', 'admin']), companyCtrl.remove);
+  .delete(authHandler.authAndCheckRoles(['superadmin', 'admin']), companyCtrl.remove);
 
 /** Load company when API with companyId route parameter is hit */
 router.param('companyId', companyCtrl.load);
