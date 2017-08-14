@@ -26,7 +26,8 @@ function list(req, res, next) {
     ], function (err, result) {
         // const messages = result
         if (err) { return next(err) }
-        res.json(result[0].messages);
+        else if (result.lenght > 0) res.json(result[0].messages); 
+        else res.json(result) ;
 
     });
 }
