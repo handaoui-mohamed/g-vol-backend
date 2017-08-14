@@ -37,10 +37,10 @@ describe('## Company APIs', () => {
 
   let jwtToken;
 
-  describe('# POST /api/auth/login', () => {
+  describe('# POST /api/auth/login-admin', () => {
     it('should login with Admin', (done) => {
       request(app)
-        .post('/api/auth/login')
+        .post('/api/auth/login-admin')
         .send(validUserCredentials)
         .expect(httpStatus.OK)
         .then((res) => {

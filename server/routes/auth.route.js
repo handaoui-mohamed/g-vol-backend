@@ -6,7 +6,7 @@ import authCtrl from '../controllers/auth.controller';
 const router = express.Router(); // eslint-disable-line new-cap
 
 /** POST /api/auth/login - Returns token if correct username and password is provided */
-router.route('/login')
+router.route('/login-:accountType')
   .post(validate(paramValidation.login), authCtrl.login);
 
 export default router;

@@ -47,10 +47,10 @@ describe('## Flight APIs', () => {
   let adminToken;
   let clcToken;
 
-  describe('# POST /api/auth/login', () => {
+  describe('# POST /api/auth/login-admin', () => {
     it('should login with Admin', (done) => {
       request(app)
-        .post('/api/auth/login')
+        .post('/api/auth/login-admin')
         .send(validAdminCredentials)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -62,10 +62,10 @@ describe('## Flight APIs', () => {
     });
   });
 
-  describe('# POST /api/auth/login', () => {
+  describe('# POST /api/auth/login-clc', () => {
     it('should login with CLC', (done) => {
       request(app)
-        .post('/api/auth/login')
+        .post('/api/auth/login-clc')
         .send(validClcCredentials)
         .expect(httpStatus.OK)
         .then((res) => {

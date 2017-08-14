@@ -54,7 +54,7 @@ describe('## Account APIs', () => {
   describe('# POST /api/auth/login', () => {
     it('should login with Admin', (done) => {
       request(app)
-        .post('/api/auth/login')
+        .post('/api/auth/login-admin')
         .send(validUserCredentials)
         .expect(httpStatus.OK)
         .then((res) => {

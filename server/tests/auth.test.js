@@ -25,7 +25,7 @@ describe('## Auth APIs', () => {
     }).then((account) => {
       accountToDelete = account;
       done();
-    }); 
+    });
   });
 
   const validUserCredentials = {
@@ -40,10 +40,22 @@ describe('## Auth APIs', () => {
 
   let jwtToken;
 
-  describe('# POST /api/auth/login', () => {
-    it('should return Authentication error', (done) => {
+  describe('# POST /api/auth/login-:accountType', () => {
+    it('should return Authentication error due to invalid account - /login-admin', (done) => {
       request(app)
-        .post('/api/auth/login')
+        .post('/api/auth/login-admin')
+        .send(invalidUserCredentials)
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).to.equal('Authentication error');
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should return Authentication error due to account type is admin - /login-clc', (done) => {
+      request(app)
+        .post('/api/auth/login-clc')
         .send(invalidUserCredentials)
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
@@ -55,7 +67,7 @@ describe('## Auth APIs', () => {
 
     it('should get valid JWT token', (done) => {
       request(app)
-        .post('/api/auth/login')
+        .post('/api/auth/login-admin')
         .send(validUserCredentials)
         .expect(httpStatus.OK)
         .then((res) => {
