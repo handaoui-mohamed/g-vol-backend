@@ -155,7 +155,7 @@ FlightSchema.statics = {
             .skip(+skip)
             .limit(+limit)
             .exec();
-    },
+    }
 };
 FlightSchema.index({ flightNumber: 1, departureDate: 1 }, { unique: true });
 export default mongoose.model('Flight', FlightSchema);

@@ -49,7 +49,8 @@ function authAndCheckRoles(acceptedRoles) {
         return next();
       });
     } else {
-      return next();
+      err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+      return next(err);
     }
   };
 }

@@ -3,6 +3,7 @@ import accountRoutes from './account.route';
 import authRoutes from './auth.route';
 import companyRoutes from './company.route'
 import flightRoutes from './flight.route'
+import flightMessagesRoutes from './message.route'
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -18,9 +19,11 @@ router.use('/accounts', accountRoutes);
 router.use('/auth', authRoutes);
 
 // mount company routes at /companies
-router.use('/companies',companyRoutes);
+router.use('/companies', companyRoutes);
 
-// mount flight routes at /companies
-router.use('/flights',flightRoutes);
+// mount flight routes at /flights
+router.use('/flights', flightRoutes);
+// mount messages of a flight at /flight-messages
+router.use('/flight-messages',flightMessagesRoutes);
 
 export default router;
