@@ -37,14 +37,14 @@ function authAndCheckRoles(acceptedRoles) {
     try {
       req.jwtAccount = jwt.verify(token, config.jwtSecret);
     } catch (e) {
-      res.status(httpStatus.UNAUTHORIZED).json({
+      return res.status(httpStatus.UNAUTHORIZED).json({
         "message": 'Unauthorized'
       });
     }
     if (req.jwtAccount) {
       req.accountPromise = Account.get(req.jwtAccount.id).then((account) => {
         if (!acceptedRoles.includes(account.function.name)) {
-          res.status(httpStatus.UNAUTHORIZED).json({
+          return res.status(httpStatus.UNAUTHORIZED).json({
             message: 'Unauthorized'
           });
         }
@@ -65,7 +65,7 @@ function checkAcceptedPropreties(acceptedPropreties) {
     req.accountPropsPromise = req.accountPromise.then((account) => {
       let acceptedProps = acceptedPropreties[account.function.name];
       if (!acceptedProps) {
-        res.status(httpStatus.UNAUTHORIZED).json({
+        return res.status(httpStatus.UNAUTHORIZED).json({
           "message": 'Unauthorized'
         });
       }
