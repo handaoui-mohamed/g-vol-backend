@@ -37,6 +37,9 @@ export default {
     body: {
       username: Joi.string().min(5).required(),
       password: Joi.string().min(8).required()
+    },
+    params: {
+      accountType: Joi.string().valid('admin', 'clc', 'trc', 'tl', 'tb').required()
     }
   }
 };
