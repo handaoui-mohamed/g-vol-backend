@@ -92,23 +92,11 @@ const FlightSchema = new mongoose.Schema({
         default: flightStatus[0]
     },
     team: [mongoose.Schema.Types.ObjectId],
-    paxRepport: PaxReport,
-    documents: {
-        type: {
-            flightInfo: {
-                type: FlightInfo,
-                required: true
-            },
-            baggageReport: {
-                type: BaggageReport,
-                required: true
-            },
-            offloadList: {
-                type: OffloadList
-            },
-            others: [FlightDocument]
-        }
-    },
+    paxReport: PaxReport,
+    flightInfo: FlightInfo, 
+    offloadList: OffloadList, 
+    baggageReport: BaggageReport, 
+    otherDocuments: [FlightDocument],
     company: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
