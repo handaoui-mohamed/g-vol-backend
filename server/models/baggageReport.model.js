@@ -1,22 +1,15 @@
 import mongoose from 'mongoose';
 
 
-const BaggageReport = new mongoose.Schema({
-    title: {
-        type: String,
-        default: 'Baggage Report',
-        lowercase: true
-    },
+const BaggageReport = {
     status: {
         type: Boolean,
-        default: false
     },
     createdAt: {
-        type: Date,
-        default: Date.now
+        type: Date
     },
     table: {
-        type: [{
+        type: [new mongoose.Schema({
             baggageType: {
                 type: String,
                 lowercase: true
@@ -32,13 +25,12 @@ const BaggageReport = new mongoose.Schema({
             },
             uldType: {
                 type: String,
-                required: true,
-                lowercase: true
+                lowercase: true,
+                required: true
             }
-        }],
-        required: true
+        })],
     }
-});
+}
 
 
 export default BaggageReport ; 

@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const OffloadList ={
     status: {
         type: Boolean,
-        default: false
     },
     createdAt: {
         type: Date,

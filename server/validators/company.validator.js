@@ -3,7 +3,7 @@ import Joi from 'joi';
 const body = {
     name: Joi.string().required(),
     code: Joi.string().required(),
-    checklist: Joi.array().items(Joi.string())
+    checklist: Joi.array().items(Joi.string()).required()
 }
 
 export default {

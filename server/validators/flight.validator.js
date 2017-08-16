@@ -1,6 +1,5 @@
 import Joi from 'Joi';
 import baggageReportBody from './baggageReport.validator';
-import flightDocumentBody from './flightDocument.validator';
 import flightInfoBody from './flightInfo.validator';
 import messageBody from './message.validator';
 import offloadListBody from './offloadList.validator';

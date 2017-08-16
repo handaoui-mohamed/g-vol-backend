@@ -1,16 +1,36 @@
 import Joi from 'joi';
+import JoiObjectid from 'joi-objectid';
 
-const body = {
+Joi.objectId = JoiObjectid(Joi);
 
-    title: Joi.string(),
-    status: Joi.boolean(),
-    table: Joi.array().items(Joi.object({
-        baggageType: Joi.string(),
-        nbPieces: Joi.number(),
-        uldNumber: Joi.string(),
-        position: Joi.string(),
-        uldType: Joi.string().required(),
-    })).required()
+const bodyInit = {
+    // Table contains uld types essential to init the baggage report
+    table: Joi.array().items(Joi.string())
 }
 
-export default body;
+const bodyUpdate = {
+
+    table : Joi.array().items(Joi.object({
+        id: Joi.string().hex().required(),
+        baggageType : Joi.string(), 
+        nbPieces: Joi.number(),
+        position: Joi.string(), 
+        uldType: Joi.string()
+    }))
+}
+const bodyDelete = {
+    table : Joi.array().items(Joi.objectId())
+}
+
+export default {
+
+    initTable : {
+        body: bodyInit
+    },
+    updateTable: {
+        body : bodyUpdate
+    },
+    deleteTableItems: {
+        body: bodyDelete 
+    }
+}

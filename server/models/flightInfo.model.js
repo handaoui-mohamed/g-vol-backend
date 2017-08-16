@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 const FlightInfo = {
     status: {
         type: Boolean,
-        default: false
     },
     createdAt: {
         type: Date,

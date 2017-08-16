@@ -8,4 +8,12 @@ const body = {
     totalBaggagePax: Joi.number().required()
 }
 
-export default body ; 
+export default {
+
+    initPaxReport: {
+        body : body
+    },
+    updatePaxReport: {
+        body : body
+    }
+}; 
