@@ -8,9 +8,13 @@ import mongoose from 'mongoose';
 function initTableBaggageReport(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
         flight.baggageReport.createdAt = new Date();
-        req.body.table.forEach(function (element) {
-            flight.baggageReport.table.push({ uldType: element });
-        });
+        req.body.table.forEach(function (ele) {
+            if (ele.baggageType)  delete ele.baggageType ;
+            if (ele.nbPieces) delete ele.nbPieces ;
+            if (ele.uldNumber) delete ele.uldNumber ;
+            if (ele.position) delete ele.position ; 
+         });
+        flight.baggageReport.table = req.table ; 
         flight.save()
             .then(savedFlight => res.json(savedFlight.baggageReport))
             .catch(e => next(e));

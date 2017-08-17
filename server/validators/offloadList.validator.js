@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 const body = {
-    status: Joi.boolean(),
     table: Joi.array().items(Joi.object({
         nbPcs: Joi.number().required(),
         passengerName: Joi.string().required(),

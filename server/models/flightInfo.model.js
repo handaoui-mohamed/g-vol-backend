@@ -32,7 +32,6 @@ const FlightInfo = {
     },
     ezfw: {
         type: String,
-
         lowercase: true
     },
     flightTime: {

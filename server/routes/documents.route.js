@@ -3,10 +3,12 @@ import validate from 'express-validation';
 import paramValidation from '../validators/document.validator';
 import documentCtrl from '../controllers/document.controller';
 import authHandler from '../handlers/auth.handler';
-import baggageReportCtrl from '../controllers/baggageReport.controller'
-import baggageReportParamValidation from '../validators/baggageReport.validator'
-import flightInfoCtrl from '../controllers/flightInfo.controller'
-import flightInfoParamValidation from '../validators/flightInfo.validator'
+import baggageReportCtrl from '../controllers/baggageReport.controller';
+import baggageReportParamValidation from '../validators/baggageReport.validator';
+import flightInfoCtrl from '../controllers/flightInfo.controller';
+import flightInfoParamValidation from '../validators/flightInfo.validator';
+import offloadListCtrl from '../controllers/offloadList.controller';
+import offloadListParamValidation from '../validators/offloadList.validator';
 
 
 const router = express.Router(); // eslint-disable-line new-cap
@@ -54,7 +56,13 @@ router.route('/:flightId/' + documentCtrl.docTypes.flightInfo)
   // Init flight info from clc
   .post(authHandler.authAndCheckRoles(['clc']), validate(flightInfoParamValidation.initFlightInfo), flightInfoCtrl.initFlightInfo)
   // Update flight info 
-  .put(authHandler.authAndCheckRoles(['clc', 'trc']),validate(flightInfoParamValidation.updateFlightInfo), flightInfoCtrl.updateFlightInfo);
+  .put(authHandler.authAndCheckRoles(['clc', 'trc']), validate(flightInfoParamValidation.updateFlightInfo), flightInfoCtrl.updateFlightInfo);
 
+/**
+ * Offload list routing
+ */
+router.route('/:flightId/' + documentCtrl.docTypes.offloadList)
+  .post(authHandler.authAndCheckRoles(['tl']),offloadListCtrl.initOffloadList) 
+  .put(authHandler.authAndCheckRoles(['tl','trc']),offloadListCtrl.updateOffloadList);
 
 export default router;
