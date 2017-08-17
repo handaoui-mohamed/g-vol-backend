@@ -58,12 +58,17 @@ function list(req, res, next) {
   const {
     limit = 50, skip = 0
   } = req.query;
-  Flight.list({
-      limit,
-      skip
-    })
-    .then(flights => res.json(flights))
-    .catch(e => next(e));
+  Flight.count().then((count) => {
+    Flight.list({
+        limit,
+        skip
+      })
+      .then(flights => res.json({
+        elements: flights,
+        count
+      }))
+      .catch(e => next(e));
+  })
 }
 
 /**

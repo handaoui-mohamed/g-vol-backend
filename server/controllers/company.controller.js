@@ -23,7 +23,9 @@ function get(req, res) {
 
 // Create new company
 function create(req, res, next) {
-    Company.findOne({ code: req.body.code.toLowerCase() }).then((result) => {
+  Company.findOne({
+    code: req.body.code.toLowerCase()
+  }).then((result) => {
     if (result) {
       const err = new APIError('Company code already used', httpStatus.BAD_REQUEST, true);
       next(err);
@@ -44,8 +46,8 @@ function create(req, res, next) {
 function update(req, res, next) {
   const company = req.company;
   const data = req.body;
-  company.name = data.name; 
-  company.checklist = data.checklist ;
+  company.name = data.name;
+  company.checklist = data.checklist;
   company.save()
     .then(savedCompany => res.json(savedCompany))
     .catch(e => next(e));
@@ -58,10 +60,20 @@ function update(req, res, next) {
  * @returns {Companies[]}
  */
 function list(req, res, next) {
-  const { limit = 50, skip = 0 } = req.query;
-  Company.list({ limit, skip })
-    .then(companies => res.json(companies))
-    .catch(e => next(e));
+  const {
+    limit = 50, skip = 0
+  } = req.query;
+  Company.count().then((count) => {
+    Company.list({
+        limit,
+        skip
+      })
+      .then(companies => res.json({
+        elements: companies,
+        count
+      }))
+      .catch(e => next(e));
+  })
 }
 
 /**
@@ -75,4 +87,11 @@ function remove(req, res, next) {
     .catch(e => next(e));
 }
 
-export default { load, get, create, update, list, remove };
+export default {
+  load,
+  get,
+  create,
+  update,
+  list,
+  remove
+};
