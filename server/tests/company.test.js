@@ -86,7 +86,7 @@ describe('## Company APIs', () => {
   describe('# GET /api/companies/:companyId', () => {
     it('should get company details', (done) => {
       request(app)
-        .get(`/api/companies/${company.id}`)
+        .get(`/api/companies/${company._id}`)
         .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -115,7 +115,7 @@ describe('## Company APIs', () => {
     it('should update company details', (done) => {
       company.name = 'turkish';
       request(app)
-        .put(`/api/companies/${company.id}`)
+        .put(`/api/companies/${company._id}`)
         .set('Authorization', jwtToken)
         .send(company)
         .expect(httpStatus.OK)

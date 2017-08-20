@@ -24,14 +24,6 @@ const CompanySchema = new mongoose.Schema({
 
 });
 
-CompanySchema.set('toJSON', {
-  transform: (doc, ret) => {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
-  }
-});
-
 CompanySchema.statics = {
   /**
    * Get company

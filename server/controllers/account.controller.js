@@ -98,7 +98,7 @@ function remove(req, res, next) {
     err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
     return next(err);
   }
-  if (account.id.toString() === req.jwtAccount.id) {
+  if (account._id.toString() === req.jwtAccount.id) {
     err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
     return next(err);
   } else

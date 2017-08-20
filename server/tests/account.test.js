@@ -106,7 +106,7 @@ describe('## Account APIs', () => {
   describe('# GET /api/accounts/:accountId', () => {
     it('should get account details', (done) => {
       request(app)
-        .get(`/api/accounts/${account.id}`)
+        .get(`/api/accounts/${account._id}`)
         .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -141,7 +141,7 @@ describe('## Account APIs', () => {
     it('should update account details', (done) => {
       account.firstname = 'new firstname';
       request(app)
-        .put(`/api/accounts/${account.id}`)
+        .put(`/api/accounts/${account._id}`)
         .set('Authorization', jwtToken)
         .send(account)
         .expect(httpStatus.OK)

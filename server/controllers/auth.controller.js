@@ -22,7 +22,7 @@ function login(req, res, next) {
       }
       if (account.comparePasswords(req.body.password)) {
         const token = jwt.sign({
-          id: account.id
+          id: account._id
         }, config.jwtSecret, {
           expiresIn: '10h'
         });

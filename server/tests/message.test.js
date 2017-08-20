@@ -12,7 +12,7 @@ chai.config.includeStack = true;
 describe('## Messages APIs', () => {
   after((done) => {
     Flight.remove({
-      _id: flight.id
+      _id: flight._id
     }).then(() => {
       done();
     });
@@ -112,7 +112,7 @@ describe('## Messages APIs', () => {
   describe('# POST /api/flight-messages/:flightId', () => {
     it('should not send a new message - when admin account', (done) => {
       request(app)
-        .post(`/api/flight-messages/${flight.id}`)
+        .post(`/api/flight-messages/${flight._id}`)
         .set('Authorization', adminToken)
         .send(flight)
         .expect(httpStatus.UNAUTHORIZED)
@@ -137,7 +137,7 @@ describe('## Messages APIs', () => {
 
     it('should send a new message', (done) => {
       request(app)
-        .post(`/api/flight-messages/${flight.id}`)
+        .post(`/api/flight-messages/${flight._id}`)
         .set('Authorization', clcToken)
         .send({
           content: "hello"
@@ -145,7 +145,7 @@ describe('## Messages APIs', () => {
         .expect(httpStatus.CREATED)
         .then((res) => {
           expect(res.body.content).to.equal('hello');
-          expect(res.body.accountId).to.equal(clcAccount.id);
+          expect(res.body.accountId).to.equal(clcAccount._id);
           done();
         })
         .catch(done);
@@ -153,7 +153,7 @@ describe('## Messages APIs', () => {
 
     it('should send a new message', (done) => {
       request(app)
-        .post(`/api/flight-messages/${flight.id}`)
+        .post(`/api/flight-messages/${flight._id}`)
         .set('Authorization', clcToken)
         .send({
           content: "hello2"
@@ -161,7 +161,7 @@ describe('## Messages APIs', () => {
         .expect(httpStatus.CREATED)
         .then((res) => {
           expect(res.body.content).to.equal('hello2');
-          expect(res.body.accountId).to.equal(clcAccount.id);
+          expect(res.body.accountId).to.equal(clcAccount._id);
           done();
         })
         .catch(done);
@@ -171,7 +171,7 @@ describe('## Messages APIs', () => {
   describe('# GET /api/flight-messages/:flightId', () => {
     it('should get max 20 messages by CLC', (done) => {
       request(app)
-        .get(`/api/flight-messages/${flight.id}`)
+        .get(`/api/flight-messages/${flight._id}`)
         .set('Authorization', clcToken)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -185,7 +185,7 @@ describe('## Messages APIs', () => {
 
     it('should get all messages by CLC', (done) => {
       request(app)
-        .get(`/api/flight-messages/${flight.id}?skip=1&limit=1`)
+        .get(`/api/flight-messages/${flight._id}?skip=1&limit=1`)
         .set('Authorization', clcToken)
         .expect(httpStatus.OK)
         .then((res) => {

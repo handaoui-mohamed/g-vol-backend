@@ -12,7 +12,7 @@ chai.config.includeStack = true;
 describe('## Flight APIs', () => {
   after((done) => {
     Flight.remove({
-      _id: flight.id
+      _id: flight._id
     }).then(() => {
       done();
     });
@@ -136,7 +136,7 @@ describe('## Flight APIs', () => {
   describe('# GET /api/flights/:flightId', () => {
     it('should get flight details', (done) => {
       request(app)
-        .get(`/api/flights/${flight.id}`)
+        .get(`/api/flights/${flight._id}`)
         .set('Authorization', clcToken)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -177,7 +177,7 @@ describe('## Flight APIs', () => {
       flight.comment = 'this is a comment';
       flight.dest = 'france';
       request(app)
-        .put(`/api/flights/${flight.id}`)
+        .put(`/api/flights/${flight._id}`)
         .set('Authorization', clcToken)
         .send(flight)
         .expect(httpStatus.OK)

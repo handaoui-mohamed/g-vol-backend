@@ -76,7 +76,7 @@ describe('## Auth APIs', () => {
             Account.get(decoded.id).then((account) => {
               expect(err).to.not.be.ok; // eslint-disable-line no-unused-expressions
               expect(account.username).to.equal(validUserCredentials.username);
-              validUserCredentials.id = account.id;
+              validUserCredentials._id = account._id;
               jwtToken = `Bearer ${res.body.token}`;
               done();
             });
@@ -89,7 +89,7 @@ describe('## Auth APIs', () => {
   describe('# DELETE /api/accounts/:accountId', () => {
     it('should fail to delete account because of missing Authorization', (done) => {
       request(app)
-        .delete(`/api/accounts/${accountToDelete.id}`)
+        .delete(`/api/accounts/${accountToDelete._id}`)
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
           expect(res.body.message).to.equal('UNAUTHORIZED');
@@ -100,7 +100,7 @@ describe('## Auth APIs', () => {
 
     it('should fail to delete account because of wrong token', (done) => {
       request(app)
-        .delete(`/api/accounts/${accountToDelete.id}`)
+        .delete(`/api/accounts/${accountToDelete._id}`)
         .set('Authorization', 'Bearer inValidToken')
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
@@ -112,7 +112,7 @@ describe('## Auth APIs', () => {
 
     it('should delete account', (done) => {
       request(app)
-        .delete(`/api/accounts/${accountToDelete.id}`)
+        .delete(`/api/accounts/${accountToDelete._id}`)
         .set('Authorization', jwtToken)
         .expect(httpStatus.OK)
         .then((res) => {
