@@ -12,6 +12,8 @@ router.route('/')
 
   /** POST /api/accounts - Create new account */
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createAccount), accountCtrl.create);
+  
+router.route('/count').get(authHandler.authenticate(), accountCtrl.count);
 
 router.route('/:accountId')
   /** GET /api/accounts/:accountId - Get account */

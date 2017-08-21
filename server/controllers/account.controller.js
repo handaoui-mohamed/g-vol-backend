@@ -74,17 +74,22 @@ function list(req, res, next) {
   const {
     limit = 50, skip = 0
   } = req.query;
-  Account.count().then((count) => {
-    Account.list({
-        limit,
-        skip
-      })
-      .then(accounts => res.json({
-        elements: accounts,
-        count
-      }))
-      .catch(e => next(e));
-  })
+  Account.list({
+      limit,
+      skip
+    })
+    .then(accounts => res.json(accounts))
+    .catch(e => next(e));
+}
+
+/**
+ * Get accounts count.
+ * @returns {Number}
+ */
+function count(req, res, next) {
+  Account.count({})
+    .then(count => res.json({count}))
+    .catch(e => next(e));
 }
 
 /**
@@ -113,5 +118,6 @@ export default {
   create,
   update,
   list,
+  count,
   remove
 };

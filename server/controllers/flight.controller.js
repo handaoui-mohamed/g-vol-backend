@@ -58,17 +58,21 @@ function list(req, res, next) {
   const {
     limit = 50, skip = 0
   } = req.query;
-  Flight.count().then((count) => {
-    Flight.list({
-        limit,
-        skip
-      })
-      .then(flights => res.json({
-        elements: flights,
-        count
-      }))
-      .catch(e => next(e));
-  })
+  Flight.list({
+      limit,
+      skip
+    })
+    .then(flights => res.json(flights))
+    .catch(e => next(e));
+}
+/**
+ * Get flights count.
+ * @returns {Number}
+ */
+function count(req, res, next) {
+  Flight.count({})
+    .then(count => res.json({count}))
+    .catch(e => next(e));
 }
 
 /**
@@ -88,5 +92,6 @@ export default {
   create,
   update,
   list,
+  count,
   remove
 };

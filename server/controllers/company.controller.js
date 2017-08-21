@@ -63,17 +63,22 @@ function list(req, res, next) {
   const {
     limit = 50, skip = 0
   } = req.query;
-  Company.count().then((count) => {
-    Company.list({
-        limit,
-        skip
-      })
-      .then(companies => res.json({
-        elements: companies,
-        count
-      }))
-      .catch(e => next(e));
-  })
+  Company.list({
+      limit,
+      skip
+    })
+    .then(companies => res.json(companies))
+    .catch(e => next(e));
+}
+
+/**
+ * Get companies count.
+ * @returns {Number}
+ */
+function count(req, res, next) {
+  Company.count({})
+    .then(count => res.json({count}))
+    .catch(e => next(e));
 }
 
 /**
@@ -93,5 +98,6 @@ export default {
   create,
   update,
   list,
+  count,
   remove
 };

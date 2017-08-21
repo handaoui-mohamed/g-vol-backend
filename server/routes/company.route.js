@@ -12,6 +12,8 @@ router.route('/')
 
   /** POST /api/companis - Create new company */
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createCompany), companyCtrl.create);
+  
+router.route('/count').get(authHandler.authenticate(), companyCtrl.count);
 
 router.route('/:companyId')
   /** GET /api/companies/:companyId - Get company */

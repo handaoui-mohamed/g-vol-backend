@@ -18,6 +18,8 @@ router.route('/')
   /** POST /api/flights - Create new flight */
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createFlight), flightCtrl.create);
 
+router.route('/count').get(authHandler.authenticate(), flightCtrl.count);
+
 router.route('/:flightId')
   /** GET /api/flights/:flightId - Get flight */
   .get(authHandler.authenticate(), flightCtrl.get)
