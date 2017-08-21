@@ -7,7 +7,7 @@ import APIError from '../helpers/APIError';
 /**
  * Account Schema
  */
-const funcs = ['superadmin', 'admin','trc', 'clc', 'tl', 'tb'];
+const funcs = ['superadmin', 'admin', 'trc', 'clc', 'tl', 'tb'];
 const func = new mongoose.Schema({
   name: {
     type: String,
@@ -108,15 +108,16 @@ AccountSchema.statics = {
 
   /**
    * List accounts in descending order of 'createdAt' timestamp.
+   * @param {object} query - all query to be searched for.
    * @param {number} skip - Number of accounts to be skipped.
    * @param {number} limit - Limit number of accounts to be returned.
    * @returns {Promise<Account[]>}
    */
-  list({
+  list(query = {}, {
     skip = 0,
     limit = 50
   } = {}) {
-    return this.find()
+    return this.find(query)
       .sort({
         createdAt: -1
       })

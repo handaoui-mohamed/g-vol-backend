@@ -44,12 +44,13 @@ CompanySchema.statics = {
 
   /**
    * List companys in descending order of 'createdAt' timestamp.
+   * @param {object} query - all query to be searched for.
    * @param {number} skip - Number of companies to be skipped.
    * @param {number} limit - Limit number of companies to be returned.
    * @returns {Promise<Account[]>}
    */
-  list({ skip = 0, limit = 50 } = {}) {
-    return this.find()
+  list(query = {}, { skip = 0, limit = 50 } = {}) {
+    return this.find(query)
       .sort({ createdAt: -1 })
       .skip(+skip)
       .limit(+limit)

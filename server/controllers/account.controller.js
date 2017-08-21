@@ -72,9 +72,32 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
   const {
-    limit = 50, skip = 0
+    limit = 50, skip = 0, q = "", functions = ['clc', 'trc', 'tl', 'tb']
   } = req.query;
   Account.list({
+      $or: [{
+          username: {
+            $regex: q,
+            $options: "i"
+          }
+        },
+        {
+          firstname: {
+            $regex: q,
+            $options: "i"
+          }
+        },
+        {
+          lastname: {
+            $regex: q,
+            $options: "i"
+          }
+        }
+      ],
+      "function.name": {
+        $in: functions
+      }
+    }, {
       limit,
       skip
     })
@@ -88,7 +111,9 @@ function list(req, res, next) {
  */
 function count(req, res, next) {
   Account.count({})
-    .then(count => res.json({count}))
+    .then(count => res.json({
+      count
+    }))
     .catch(e => next(e));
 }
 

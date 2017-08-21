@@ -61,9 +61,21 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
   const {
-    limit = 50, skip = 0
+    limit = 50, skip = 0, q = ""
   } = req.query;
   Company.list({
+      $or: [{
+        name: {
+          $regex: q,
+          $options: "i"
+        }
+      }, {
+        code: {
+          $regex: q,
+          $options: "i"
+        }
+      }]
+    }, {
       limit,
       skip
     })
@@ -77,7 +89,9 @@ function list(req, res, next) {
  */
 function count(req, res, next) {
   Company.count({})
-    .then(count => res.json({count}))
+    .then(count => res.json({
+      count
+    }))
     .catch(e => next(e));
 }
 

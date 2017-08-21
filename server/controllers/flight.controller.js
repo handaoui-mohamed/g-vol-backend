@@ -56,9 +56,36 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
   const {
-    limit = 50, skip = 0
+    limit = 50, skip = 0, q = "", status = ['new', 'inprogress', 'done'],
   } = req.query;
-  Flight.list({
+
+  const query = {
+    flightNumber: {
+      $regex: q,
+      $options: "i"
+    },
+    status: {
+      $in: status
+    }
+  };
+
+  const dates = {};
+  if (req.query.start) dates.$gte = new Date(req.query.start);
+  if (req.query.end) dates.$lte = new Date(req.query.end);
+
+  if (dates.$gte || dates.$lte) {
+    query.$or = [
+      {
+        arrivalDate: dates
+      },{
+        departureDate: dates
+      }
+    ];
+  }
+  console.log('queryy', query);
+  console.log(dates);
+
+  Flight.list(query, {
       limit,
       skip
     })
@@ -71,7 +98,9 @@ function list(req, res, next) {
  */
 function count(req, res, next) {
   Flight.count({})
-    .then(count => res.json({count}))
+    .then(count => res.json({
+      count
+    }))
     .catch(e => next(e));
 }
 

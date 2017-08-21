@@ -13,7 +13,7 @@ import BaggageReport from './baggageReport.model'
 /**
  * Flight Status enum
  */
-const flightStatus = ['nouveau', 'en cours', 'cloture'];
+const flightStatus = ['new', 'inprogress', 'done'];
 
 /**
  * Flight Schema
@@ -131,12 +131,13 @@ FlightSchema.statics = {
 
     /**
      * List flights in descending order of 'createdAt' timestamp.
+     * @param {object} query - all query to be searched for.
      * @param {number} skip - Number of flights to be skipped.
      * @param {number} limit - Limit number of flights to be returned.
      * @returns {Promise<Account[]>}
      */
-    list({ skip = 0, limit = 50 } = {}) {
-        return this.find()
+    list(query= {}, { skip = 0, limit = 50 } = {}) {
+        return this.find(query)
             .sort({ createdAt: -1 })
             .skip(+skip)
             .limit(+limit)
