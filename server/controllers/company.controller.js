@@ -61,21 +61,23 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
   const {
-    limit = 50, skip = 0, q = ""
+    limit = 50, skip = 0, q
   } = req.query;
-  Company.list({
-      $or: [{
-        name: {
-          $regex: q,
-          $options: "i"
-        }
-      }, {
-        code: {
-          $regex: q,
-          $options: "i"
-        }
-      }]
+  const query = Object.assign({}, q ? {
+    $or: [{
+      name: {
+        $regex: q,
+        $options: "i"
+      }
     }, {
+      code: {
+        $regex: q,
+        $options: "i"
+      }
+    }]
+  } : null);
+
+  Company.list(query, {
       limit,
       skip
     })

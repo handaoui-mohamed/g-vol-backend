@@ -72,32 +72,36 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
   const {
-    limit = 50, skip = 0, q = "", functions = ['clc', 'trc', 'tl', 'tb']
+    limit = 50, skip = 0, q, functions = ['clc', 'trc', 'tl', 'tb']
   } = req.query;
-  Account.list({
-      $or: [{
-          username: {
-            $regex: q,
-            $options: "i"
-          }
-        },
-        {
-          firstname: {
-            $regex: q,
-            $options: "i"
-          }
-        },
-        {
-          lastname: {
-            $regex: q,
-            $options: "i"
-          }
+
+  const query = Object.assign({}, q ? {
+    $or: [{
+        username: {
+          $regex: q,
+          $options: "i"
         }
-      ],
-      "function.name": {
-        $in: functions
+      },
+      {
+        firstname: {
+          $regex: q,
+          $options: "i"
+        }
+      },
+      {
+        lastname: {
+          $regex: q,
+          $options: "i"
+        }
       }
-    }, {
+    ]
+  } : null);
+  
+  query["function.name"] = {
+    $in: functions
+  };
+
+  Account.list(query, {
       limit,
       skip
     })
