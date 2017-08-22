@@ -56,34 +56,49 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
   const {
-    limit = 50, skip = 0, q = "", status = ['new', 'inprogress', 'done'],
+    limit = 50, skip = 0, q, status
   } = req.query;
 
-  const query = {
+  const query = Object.assign({}, q ? {
     flightNumber: {
       $regex: q,
       $options: "i"
-    },
+    }
+  } : null, status ? {
     status: {
       $in: status
     }
-  };
+  } : null);
 
-  const dates = {};
-  if (req.query.start) dates.$gte = new Date(req.query.start);
-  if (req.query.end) dates.$lte = new Date(req.query.end);
+  const arrivalDate = Object.assign({},
+    req.query.arrivalstart ? {
+      $gte: new Date(req.query.arrivalstart)
+    } : null,
+    req.query.arrivalend ? {
+      $lte: new Date(req.query.arrivalend)
+    } : null);
 
-  if (dates.$gte || dates.$lte) {
-    query.$or = [
-      {
-        arrivalDate: dates
-      },{
-        departureDate: dates
-      }
-    ];
+  const departureDate = Object.assign({},
+    req.query.departurestart ? {
+      $gte: new Date(req.query.departurestart)
+    } : null,
+    req.query.departureend ? {
+      $lte: new Date(req.query.departureend)
+    } : null);
+
+  if (arrivalDate.$gte || arrivalDate.$lte) {
+    query.$or = [{
+      arrivalDate
+    }];
   }
-  console.log('queryy', query);
-  console.log(dates);
+
+  if (departureDate.$gte || departureDate.$lte) {
+    const departure = {
+      departureDate
+    }
+    query.$or = query.$or ? query.$or.push(departure) : [departure];
+  }
+  console.log("queryyy", query);
 
   Flight.list(query, {
       limit,
