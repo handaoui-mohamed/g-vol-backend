@@ -12,11 +12,26 @@ import APIError from '../helpers/APIError';
  * app.use('/random/route').get(authHandler.authenticate(), handlers..)
  * @returns {function(req,res,next)}
  */
-function authenticate() {
-  return expressJwt({
-    secret: config.jwtSecret,
-    requestProperty: 'jwtAccount'
-  });
+function authenticate(req, res, next) {
+  let token;
+  const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);;
+  if (req.headers.authorization)
+    token = req.headers.authorization.split(' ')[1];
+
+  try {
+    req.jwtAccount = jwt.verify(token, config.jwtSecret);
+  } catch (e) {
+    return next(err)
+  }
+
+  if (req.jwtAccount) {
+    Account.get(req.jwtAccount.id).then((account) => {
+      if (!account)
+        return next(err);
+      return next();
+    });
+  } else
+    return next(err);
 }
 
 /**
@@ -30,28 +45,25 @@ function authenticate() {
 function authAndCheckRoles(acceptedRoles) {
   return (req, res, next) => {
     let token;
-    let err;
-    if (req.headers.authorization) {
+    const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+    if (req.headers.authorization)
       token = req.headers.authorization.split(' ')[1];
-    }
+
     try {
       req.jwtAccount = jwt.verify(token, config.jwtSecret);
     } catch (e) {
-      err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+      return next(err);
     }
+
     if (req.jwtAccount) {
       Account.get(req.jwtAccount.id).then((account) => {
         req.loggedAccount = account;
-        if (!acceptedRoles.includes(account.function.name)) {
-          err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+        if (!acceptedRoles.includes(account.function.name))
           return next(err);
-        }
         return next();
       });
-    } else {
-      err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+    } else
       return next(err);
-    }
   };
 }
 

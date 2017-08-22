@@ -13,16 +13,16 @@ const updateProp = {
 }
 router.route('/')
   /** GET /api/flights - Get list of flights */
-  .get(authHandler.authenticate(), flightCtrl.list)
+  .get(authHandler.authenticate, flightCtrl.list)
 
   /** POST /api/flights - Create new flight */
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createFlight), flightCtrl.create);
 
-router.route('/count').get(authHandler.authenticate(), flightCtrl.count);
+router.route('/count').get(authHandler.authenticate, flightCtrl.count);
 
 router.route('/:flightId')
   /** GET /api/flights/:flightId - Get flight */
-  .get(authHandler.authenticate(), flightCtrl.get)
+  .get(authHandler.authenticate, flightCtrl.get)
 
   /** PUT /api/flights/:flightId - Update flight */
   .put(authHandler.authAndCheckRoles(['superadmin', 'admin', 'clc', 'trc']), authHandler.checkAcceptedPropreties(updateProp), validate(paramValidation.updateFlight), flightCtrl.update)

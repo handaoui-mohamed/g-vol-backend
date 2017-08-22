@@ -6,7 +6,7 @@
     "email": "user@gmail.com",
     "sexe": "female",
     "birthday": "05/05/1988",
-    "adress": "user test town",
+    "address": "user test town",
     "function": {
       "name": "superadmin",
       "description": "description admin"
@@ -20,7 +20,7 @@
     "email": "user@gmail.com",
     "sexe": "female",
     "birthday": "05/05/1988",
-    "adress": "user test town",
+    "address": "user test town",
     "function": {
       "name": "admin",
       "description": "description admin"
@@ -35,7 +35,7 @@
     "email": "user@gmail.com",
     "sexe": "female",
     "birthday": "05/05/1988",
-    "adress": "user test town",
+    "address": "user test town",
     "function": {
       "name": "tb",
       "description": "description tri bagage"
@@ -50,7 +50,7 @@
     "email": "user@gmail.com",
     "sexe": "male",
     "birthday": "04/02/1988",
-    "adress": "user test town",
+    "address": "user test town",
     "function": {
       "name": "clc",
       "description": "description clc"
@@ -65,7 +65,7 @@
     "email": "user@gmail.com",
     "sexe": "female",
     "birthday": "05/05/1988",
-    "adress": "user test town",
+    "address": "user test town",
     "function": {
       "name": "tl",
       "description": "description team leader"
@@ -80,7 +80,7 @@
     "email": "user@gmail.com",
     "sexe": "male",
     "birthday": "05/05/1988",
-    "adress": "user test town",
+    "address": "user test town",
     "function": {
       "name": "trc"
     },

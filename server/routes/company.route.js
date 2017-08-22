@@ -8,16 +8,16 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
   /** GET /api/companies - Get list of companies */
-  .get(authHandler.authenticate(), companyCtrl.list)
+  .get(authHandler.authenticate, companyCtrl.list)
 
   /** POST /api/companis - Create new company */
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createCompany), companyCtrl.create);
   
-router.route('/count').get(authHandler.authenticate(), companyCtrl.count);
+router.route('/count').get(authHandler.authenticate, companyCtrl.count);
 
 router.route('/:companyId')
   /** GET /api/companies/:companyId - Get company */
-  .get(authHandler.authenticate(), companyCtrl.get)
+  .get(authHandler.authenticate, companyCtrl.get)
 
   /** PUT /api/companis/:companyId - Update company */
   .put(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.updateCompany), companyCtrl.update)
