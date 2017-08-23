@@ -17,6 +17,8 @@ function authenticate(req, res, next) {
   const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);;
   if (req.headers.authorization)
     token = req.headers.authorization.split(' ')[1];
+  else
+    return next(err)
 
   try {
     req.jwtAccount = jwt.verify(token, config.jwtSecret);
@@ -48,6 +50,8 @@ function authAndCheckRoles(acceptedRoles) {
     const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
     if (req.headers.authorization)
       token = req.headers.authorization.split(' ')[1];
+    else
+      return next(err)
 
     try {
       req.jwtAccount = jwt.verify(token, config.jwtSecret);
@@ -58,7 +62,7 @@ function authAndCheckRoles(acceptedRoles) {
     if (req.jwtAccount) {
       Account.get(req.jwtAccount.id).then((account) => {
         req.loggedAccount = account;
-        if (!acceptedRoles.includes(account.function.name))
+        if (!account || !acceptedRoles.includes(account.function.name))
           return next(err);
         return next();
       });
