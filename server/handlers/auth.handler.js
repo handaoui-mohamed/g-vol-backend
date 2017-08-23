@@ -47,7 +47,7 @@ function authenticate(req, res, next) {
 function authAndCheckRoles(acceptedRoles) {
   return (req, res, next) => {
     let token;
-    const err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+    let err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
     if (req.headers.authorization)
       token = req.headers.authorization.split(' ')[1];
     else
@@ -62,8 +62,10 @@ function authAndCheckRoles(acceptedRoles) {
     if (req.jwtAccount) {
       Account.get(req.jwtAccount.id).then((account) => {
         req.loggedAccount = account;
-        if (!account || !acceptedRoles.includes(account.function.name))
+        if (!account || !acceptedRoles.includes(account.function.name)) {
+          err = new APIError('FORBIDDEN', httpStatus.FORBIDDEN, true);
           return next(err);
+        }
         return next();
       });
     } else
@@ -77,10 +79,9 @@ function authAndCheckRoles(acceptedRoles) {
  */
 function checkAcceptedPropreties(acceptedPropreties) {
   return (req, res, next) => {
-    let err;
     req.acceptedProps = acceptedPropreties[req.loggedAccount.function.name];
     if (!req.acceptedProps) {
-      err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+      const err = new APIError('FORBIDDEN', httpStatus.FORBIDDEN, true);
       return next(err);
     } else {
       return next();
