@@ -16,8 +16,8 @@ const body = {
   acType: Joi.string().required(),
   sta: Joi.string().required(),
   std: Joi.string().required(),
-  ata: Joi.string().required(),
-  atd: Joi.string().required(),
+  ata: Joi.string(),
+  atd: Joi.string(),
   eta: Joi.string(),
   etd: Joi.string(),
   configuration: Joi.string(),
@@ -32,6 +32,13 @@ export default {
   // POST /api/flights
   createFlight: {
     body: body
+  },
+
+  // POST /api/flights/batch
+  createFlights: {
+    body: {
+      flights: Joi.array().items(body).required()
+    }
   },
 
   // UPDATE /api/companies/:flightId

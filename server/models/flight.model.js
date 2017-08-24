@@ -50,13 +50,11 @@ const FlightSchema = new mongoose.Schema({
     },
     ata: {
         type: String,
-        required: true,
         lowercase: true
 
     },
     atd: {
         type: String,
-        required: true,
         lowercase: true
 
     },

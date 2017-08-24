@@ -30,6 +30,15 @@ function create(req, res, next) {
     .catch(e => next(e));
 }
 
+// Create new flights batch
+function createFlights(req, res, next) {
+  const flights = req.body.flights;
+  Flight.collection.insertMany(flights, (err, r) => {
+    if (err) return next(e)
+    res.status(httpStatus.CREATED).json({});
+  })
+}
+
 /**
  * Update existing flight
  * @property {Flight} req.body - The flight.
@@ -137,5 +146,6 @@ export default {
   update,
   list,
   count,
-  remove
+  remove,
+  createFlights
 };

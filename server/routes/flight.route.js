@@ -19,6 +19,7 @@ router.route('/')
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createFlight), flightCtrl.create);
 
 router.route('/count').get(authHandler.authenticate, flightCtrl.count);
+router.route('/batch').post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createFlights), flightCtrl.createFlights);
 
 router.route('/:flightId')
   /** GET /api/flights/:flightId - Get flight */
