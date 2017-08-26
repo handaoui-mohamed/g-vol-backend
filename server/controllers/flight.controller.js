@@ -107,7 +107,6 @@ function list(req, res, next) {
     }
     query.$or = query.$or ? query.$or.push(departure) : [departure];
   }
-  console.log("queryyy", query);
 
   Flight.list(query, {
       limit,
