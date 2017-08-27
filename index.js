@@ -6,7 +6,7 @@ import config from './config/config';
 import { io, server } from './config/socket';
 import dataGenerator from './generate';
 
-const socket = require('./server/socket/index.socket')(io);
+const socket = require('./server/sockets/index.socket')(io);
 const debug = require('debug')('express-mongoose-es6-rest-api:index');
 
 // make bluebird default Promise
