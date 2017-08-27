@@ -3,9 +3,10 @@ import util from 'util';
 
 // config should be imported before importing any other file
 import config from './config/config';
-import app from './config/express';
+import { io, server } from './config/socket';
 import dataGenerator from './generate';
 
+const socket = require('./server/socket/index.socket')(io);
 const debug = require('debug')('express-mongoose-es6-rest-api:index');
 
 // make bluebird default Promise
@@ -38,11 +39,11 @@ if (config.MONGOOSE_DEBUG) {
 // src: https://github.com/mochajs/mocha/issues/1912
 if (!module.parent) {
   // listen on port config.port
-  app.listen(config.port, () => {
+  server.listen(config.port, () => {
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
     dataGenerator.generateAdmin();
     if (config.env === 'development') dataGenerator.generateFakers();
   });
 }
 
-export default app;
+export default server;
