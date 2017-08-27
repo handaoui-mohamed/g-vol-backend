@@ -49,6 +49,7 @@ function update(req, res, next) {
   const data = req.body;
 
   req.acceptedProps.forEach((proprety) => {
+    console.log("HERE",data.dest);
     flight.set(proprety, data[proprety]);
   });
 

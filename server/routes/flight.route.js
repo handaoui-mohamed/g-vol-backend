@@ -6,10 +6,11 @@ import authHandler from '../handlers/auth.handler';
 
 const router = express.Router(); // eslint-disable-line new-cap
 const updateProp = {
-  admin: ['flightNumber', 'arrivalDate', 'departureDate', 'acType', 'sta', 'std', 'ata', 'atd', 'eta', 'etd', 'comment', 'configurtion', 'registration', 'status', 'team'],
-  superadmin: ['flightNumber', 'arrivalDate', 'departureDate', 'acType', 'sta', 'std', 'ata', 'atd', 'eta', 'etd', 'comment', 'configurtion', 'registration', 'status', 'team'],
+  admin: ['flightNumber', 'arrivalDate', 'departureDate', 'acType', 'sta', 'std', 'ata', 'atd', 'eta', 'etd', 'comment', 'configurtion', 'registration', 'status', 'team', 'dest'],
+  superadmin: ['flightNumber', 'arrivalDate', 'departureDate', 'acType', 'sta', 'std', 'ata', 'atd', 'eta', 'etd', 'comment', 'configurtion', 'registration', 'status', 'team', 'dest'],
   clc: ['team', 'comment', 'status'],
-  trc: ['eta', 'etd']
+  trc: ['eta', 'etd', 'team', 'ata', 'atd'],
+  tl: ['team']
 }
 router.route('/')
   /** GET /api/flights - Get list of flights */
