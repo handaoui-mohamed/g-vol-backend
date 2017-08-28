@@ -6,6 +6,7 @@ import flightRoutes from './flight.route'
 import flightMessagesRoutes from './message.route'
 import flightDocumentsRoutes from './documents.route'
 import flightPaxReportRoutes from './paxReport.route'
+import flightTeamRoutes from './flightTeam.route';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -25,12 +26,14 @@ router.use('/companies', companyRoutes);
 
 // mount flight routes at /flights
 router.use('/flights', flightRoutes);
+// mount team of a flight at /flight-team
+router.use('/flight-team', flightTeamRoutes);
 // mount messages of a flight at /flight-messages
-router.use('/flight-messages',flightMessagesRoutes);
+router.use('/flight-messages', flightMessagesRoutes);
 // mount documents of a flight at /flight-documents
-router.use('/flight-documents',flightDocumentsRoutes);
+router.use('/flight-documents', flightDocumentsRoutes);
 // mount pax report of a flight at /flight-paxreport
-router.use('/flight-paxreport',flightPaxReportRoutes); 
+router.use('/flight-paxreport', flightPaxReportRoutes);
 
 
 export default router;

@@ -3,14 +3,12 @@ import JoiObjectid from 'joi-objectid';
 
 Joi.objectId = JoiObjectid(Joi);
 
-const body = {
-    content: Joi.string().required()
-}
-
 export default {
-    // POST /api/:Idflight/messages
-    createMessage: {
-        body: body,
+    // POST/DELETE team
+    team: {
+        body: {
+            accountId: Joi.objectId().required()
+        },
         params: {
             flightId: Joi.objectId().required()
         }
