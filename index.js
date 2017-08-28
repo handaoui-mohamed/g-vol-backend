@@ -4,7 +4,6 @@ import util from 'util';
 // config should be imported before importing any other file
 import config from './config/config';
 import { io, server } from './config/socket';
-import dataGenerator from './generate';
 
 const socket = require('./server/sockets/index.socket')(io);
 const debug = require('debug')('express-mongoose-es6-rest-api:index');
@@ -41,8 +40,6 @@ if (!module.parent) {
   // listen on port config.port
   server.listen(config.port, () => {
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
-    dataGenerator.generateAdmin();
-    if (config.env === 'development') dataGenerator.generateFakers();
   });
 }
 

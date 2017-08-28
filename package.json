@@ -11,7 +11,9 @@
     "yarn": ">=0.20.3"
   },
   "scripts": {
-    "start": "gulp serve",
+    "start": "gulp generate serve",
+    "generate": "gulp generate",
+    "serve": "gulp serve",
     "start:debug": "cross-env DEBUG=express-mongoose-es6-rest-api:* yarn start",
     "build": "gulp",
     "lint": "esw *.js server config --color",
@@ -90,6 +92,7 @@
     "gulp-load-plugins": "^1.2.0",
     "gulp-newer": "^1.1.0",
     "gulp-nodemon": "^2.0.6",
+    "gulp-shell": "0.6.3",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
     "husky": "^0.13.1",

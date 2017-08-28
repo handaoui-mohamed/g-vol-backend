@@ -3,6 +3,7 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import path from 'path';
 import del from 'del';
 import runSequence from 'run-sequence';
+import shell from 'gulp-shell';
 
 const plugins = gulpLoadPlugins();
 
@@ -49,8 +50,12 @@ gulp.task('nodemon', ['copy', 'babel'], () =>
   })
 );
 
+// Generate data
+gulp.task('generate', ['clean', 'copy', 'babel'], shell.task("node " + path.join('dist', 'generate.js')));
+
 // gulp serve for development
 gulp.task('serve', ['clean'], () => runSequence('nodemon'));
+
 
 // default task: clean dist, compile js files and copy non-js files.
 gulp.task('default', ['clean'], () => {
