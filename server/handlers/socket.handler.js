@@ -17,8 +17,10 @@ function handshake(socket) {
 			Account.get(accountJWT.id).then((account) => {
 				if (!account)
 					socket.disconnect();
-				else
+				else {
 					socket.accountId = account._id.toString();
+					socket.account = account;
+				}
 			});
 		else
 			socket.disconnect();

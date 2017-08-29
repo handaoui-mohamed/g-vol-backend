@@ -6,18 +6,14 @@ export default function (io, socket, flightId) {
     socket.on('messages/' + flightId, (data) => {
         joi.validate(data, paramValidation.createMessage, (err) => {
             if (!err) {
-                Flight.get(data.params.flightId).then((flight) => {
-                    data.body.accountId = socket.accountId;
-                    flight.messages.unshift(data.body);
-                    flight.save()
-                        .then(savedFlight => {
-                            io.in(flightId).emit('messages/' + data.params.flightId, savedFlight.messages[0]);
-                        }).catch(e => console.warn('save : ', e));
-                }).catch(e => console.warn('fetch : ', e));
+                data.body.accountId = socket.accountId;
+                Flight.findByIdAndUpdate(flightId, { $push: { messages: { $each: [data.body], $position: 0 } } },
+                    { "new": true }, (err, flight) => {
+                        if (err) console.warn('save : ', err);
+                        io.in(data.params.flightId).emit('messages/' + data.params.flightId, flight.messages[0]);
+                    });
             }
             else console.log('Message create validation', err);
-
         });
-
     });
 }

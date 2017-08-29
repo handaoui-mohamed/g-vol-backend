@@ -7,7 +7,7 @@ export default function (io, socket) {
             if (flight) {
                 socket.join(flightId);
                 initRoomMessages(io, socket, flightId);
-                io.in(flightId).emit('joined', flightId);
+                io.in(flightId).emit('joined', { flightId, account: socket.account });
             } else
                 socket.emit('unauthorized join', flightId);
 
