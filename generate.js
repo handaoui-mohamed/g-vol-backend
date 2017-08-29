@@ -25,9 +25,8 @@ mongoose.connect(mongoUri, {
 });
 
 mongoose.connection.on('connected', function () {
-  console.log(`connected to database: ${mongoUri}`);
   generateAdmin();
-  generateFakers();
+  if (config.env === 'development') generateFakers();
   Promise.all(promises).then(() => {
     mongoose.connection.close();
   });

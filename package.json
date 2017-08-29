@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "gulp generate serve",
+    "start:dist": "cross-env NODE_ENV=production yarn start",
     "generate": "gulp generate",
     "serve": "gulp serve",
     "start:debug": "cross-env DEBUG=express-mongoose-es6-rest-api:* yarn start",
