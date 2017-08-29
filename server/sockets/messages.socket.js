@@ -3,7 +3,8 @@ import messageCtrl from '../controllers/message.controller';
 import paramValidation from '../validators/message.validator';
 import Flight from '../models/flight.model';
 export default function (io, socket, flightId) {
-    socket.on('messages/' + flightId, (data) => {
+    socket.removeListener('new-message/' + flightId, (data) => { });
+    socket.on('new-message/' + flightId, (data) => {
         joi.validate(data, paramValidation.createMessage, (err) => {
             if (!err) {
                 data.body.accountId = socket.accountId;
