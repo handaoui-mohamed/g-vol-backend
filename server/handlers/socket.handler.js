@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
-import io from '../../config/socket';
+import config from '../../config/config';
+import socketConfig from '../../config/socket';
 import Account from '../models/account.model';
 
 function handshake(socket) {
@@ -17,7 +18,7 @@ function handshake(socket) {
 				if (!account)
 					socket.disconnect();
 				else
-					socket.accountId = account._id;
+					socket.accountId = account._id.toString();
 			});
 		else
 			socket.disconnect();
@@ -25,8 +26,15 @@ function handshake(socket) {
 }
 
 function getAccountSocket(accountId) {
+	let io = socketConfig.io;
 	if (io.sockets.connected) {
-		return io.sockets.connected.find(socket => socket.accountId === accountId);
+		for (let socketId in io.sockets.connected) {
+			if (io.sockets.connected.hasOwnProperty(socketId)) {
+				let socket = io.sockets.connected[socketId];
+				if (socket.accountId === accountId)
+					return socket;
+			}
+		}
 	}
 }
 
@@ -35,12 +43,12 @@ function disconnectAccount(accountId) {
 	if (socket) socket.disconnect();
 }
 
-function removeAccountfromRoom(accountId, room) {
+function removeAccountfromFlight(accountId, flightId) {
 	const socket = getAccountSocket(accountId);
-	if (socket) socket.leave(room);
+	if (socket) socket.leave(flightId);
 }
 
-function removeAccountAndDisconnect(accountId, room) {
+function removeAccountAndDisconnect(accountId, flightId) {
 	const socket = getAccountSocket(accountId);
 	if (socket) {
 		socket.leave(room);
@@ -53,6 +61,6 @@ export default {
 	handshake,
 	getAccountSocket,
 	disconnectAccount,
-	removeAccountfromRoom,
+	removeAccountfromFlight,
 	removeAccountAndDisconnect
 }

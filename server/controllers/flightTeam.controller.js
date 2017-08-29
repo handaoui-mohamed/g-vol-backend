@@ -7,24 +7,35 @@ import socketHandler from '../handlers/socket.handler';
 function add(req, res, next) {
     const flightId = req.params.flightId;
     const accountId = req.body.accountId;
+    const account = req.loggedAccount; // current connected account;
 
-    Flight.findByIdAndUpdate(flightId, { $push: { team: accountId } }, (err, flight) => {
+    if (account.function.name !== "clc" && account._id.toString() !== accountId) {
+        let err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+        return next(err);
+    }
+    Flight.findByIdAndUpdate(flightId, { $addToSet: { team: accountId } }, { "new": true }, (err, flight) => {
         if (err) return next(err);
         res.status(httpStatus.CREATED).json(flight.team);
-    }).catch(e => next(e));
+    });
 }
 
 function remove(req, res, next) {
     const flightId = req.params.flightId;
     const accountId = req.body.accountId;
+    const account = req.loggedAccount; // current connected account;
 
-    Flight.findByIdAndUpdate(flightId, { $pull: { team: accountId } }, (err, flight) => {
+    if (account.function.name !== "clc" && account._id.toString() !== accountId) {
+        let err = new APIError('UNAUTHORIZED', httpStatus.UNAUTHORIZED, true);
+        return next(err);
+    }
+    Flight.findByIdAndUpdate(flightId, { $pull: { team: accountId } }, { "new": true }, (err, flight) => {
         if (err) return next(err);
-        res.status(httpStatus.CREATED).json(flight.team);
-        
+
         // remove account from flight socket
-        socketHandler.removeAccountfromRoom(accountId, flightId);
-    }).catch(e => next(e));
+        socketHandler.removeAccountfromFlight(accountId, flightId);
+
+        res.status(httpStatus.CREATED).json(flight.team);
+    });
 }
 
 export default {

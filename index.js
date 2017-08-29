@@ -43,4 +43,4 @@ if (!module.parent) {
   });
 }
 
-export default server;
+export default { io, server };

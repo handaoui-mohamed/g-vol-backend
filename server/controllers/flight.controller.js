@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import Flight from '../models/flight.model';
+import Account from '../models/account.model';
 import APIError from '../helpers/APIError';
 
 /**
@@ -19,7 +20,19 @@ function load(req, res, next, id) {
  * @returns {Flight}
  */
 function get(req, res) {
-  return res.json(req.flight);
+  let flight = req.flight.toJSON();
+  const promises = [];
+  // get team members from their account IDs
+  if (flight.team) {
+    flight.team.forEach((accountId) => {
+      promises.push(Account.get(accountId));
+    });
+    Promise.all(promises).then((team) => {
+      flight.team = team;
+      return res.json(flight);
+    })
+  } else
+    return res.json(flight);
 }
 
 // Create new flight
@@ -49,7 +62,7 @@ function update(req, res, next) {
   const data = req.body;
 
   req.acceptedProps.forEach((proprety) => {
-    console.log("HERE",data.dest);
+    console.log("HERE", data.dest);
     flight.set(proprety, data[proprety]);
   });
 
@@ -110,9 +123,9 @@ function list(req, res, next) {
   }
 
   Flight.list(query, {
-      limit,
-      skip
-    })
+    limit,
+    skip
+  })
     .then(flights => res.json(flights))
     .catch(e => next(e));
 }
