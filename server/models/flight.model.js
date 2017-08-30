@@ -139,6 +139,7 @@ FlightSchema.statics = {
             .sort({ createdAt: -1 })
             .skip(+skip)
             .limit(+limit)
+            .select({team:0,messages:0,otherDocuments:0,paxReport:0,flightInfo:0,baggageReport:0,offloadList:0})
             .exec();
     }
 };

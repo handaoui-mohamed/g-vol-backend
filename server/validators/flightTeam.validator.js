@@ -5,13 +5,18 @@ Joi.objectId = JoiObjectid(Joi);
 
 export default {
     // POST/DELETE team
-    team: {
+    add: {
+        params: {
+            flightId: Joi.objectId().required()
+        }
+    },
+
+    delete: {
         body: {
             accountId: Joi.objectId().required()
         },
         params: {
             flightId: Joi.objectId().required()
         }
-    },
-
+    }
 };

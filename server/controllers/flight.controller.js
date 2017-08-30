@@ -25,7 +25,7 @@ function get(req, res) {
   // get team members from their account IDs
   if (flight.team) {
     flight.team.forEach((accountId) => {
-      promises.push(Account.get(accountId));
+      promises.push(Account.findById(accountId));
     });
     Promise.all(promises).then((team) => {
       flight.team = team;
