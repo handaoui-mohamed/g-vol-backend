@@ -11,22 +11,23 @@ function handshake(socket) {
 		try {
 			accountJWT = jwt.verify(token, config.jwtSecret);
 		} catch (e) {
-			socket.emit('unauthorized', account);
+			socket.emit('unauthorized');
 			socket.disconnect();
 		}
 		if (accountJWT)
 			Account.get(accountJWT.id).then((account) => {
 				if (!account) {
-					socket.emit('unauthorized', account);
+					socket.emit('unauthorized');
 					socket.disconnect();
 				}
 				else {
 					socket.accountId = account._id.toString();
 					socket.account = account;
+					socket.emit('connected', account);
 				}
 			});
 		else {
-			socket.emit('unauthorized', account);
+			socket.emit('unauthorized');
 			socket.disconnect();
 		}
 	}
