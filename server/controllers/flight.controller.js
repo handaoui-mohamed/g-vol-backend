@@ -115,7 +115,7 @@ function list(req, res, next) {
     const departure = {
       departureDate
     }
-    query.$or = query.$or ? query.$or.push(departure) : [departure];
+    query.$or ? query.$or.push(departure) : query.$or = [departure];
   }
 
   Flight.list(query, {
