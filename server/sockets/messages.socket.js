@@ -9,10 +9,13 @@ export default function (io, socket, flightId) {
         joi.validate(data, paramValidation.createMessage, (err) => {
             if (!err) {
                 data.body.accountId = socket.accountId;
-                Flight.findByIdAndUpdate(flightId, { $push: { messages: { $each: [data.body], $position: 0 } } },
+                Flight.findByIdAndUpdate(data.params.flightId, { $push: { messages: { $each: [data.body], $position: 0 } } },
                     { "new": true }, (err, flight) => {
                         if (err) console.warn('save : ', err);
-                        io.in(data.params.flightId).emit('messages/' + data.params.flightId, JSON.stringify(flight.messages[0]));
+                        io.in(data.params.flightId).emit('messages/' + data.params.flightId, JSON.stringify({
+                            message: flight.messages[0],
+                            flightId: data.params.flightId
+                        }));
                     });
             }
             else console.log('Message create validation', err);
