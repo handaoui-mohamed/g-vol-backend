@@ -64,9 +64,15 @@ function removeAccountAndDisconnect(accountId, flightId) {
 	}
 }
 
+function isInFlight(socket, flightId) {
+	let io = socketConfig.io;
+	return io.sockets.adapter.sids[socket.id][flightId]
+}
+
 
 export default {
 	handshake,
+	isInFlight,
 	getAccountSocket,
 	disconnectAccount,
 	removeAccountfromFlight,

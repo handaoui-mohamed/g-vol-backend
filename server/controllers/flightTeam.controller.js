@@ -11,13 +11,9 @@ function add(req, res, next) {
 
     Flight.findByIdAndUpdate(flightId, { $addToSet: { team: accountId } }, { "new": true }, (err, flight) => {
         if (err) return next(err);
-        const promises = [];
-        flight.team.forEach((accountId) => {
-            promises.push(Account.findById(accountId));
-        });
-        Promise.all(promises).then((team) => {
+        Account.find({ _id: { $in: flight.team } }).then((team) => {
             res.status(httpStatus.CREATED).json(team);
-        })
+        });
     });
 }
 

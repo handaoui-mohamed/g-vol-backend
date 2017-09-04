@@ -21,16 +21,12 @@ function load(req, res, next, id) {
  */
 function get(req, res) {
   let flight = req.flight.toJSON();
-  const promises = [];
   // get team members from their account IDs
   if (flight.team) {
-    flight.team.forEach((accountId) => {
-      promises.push(Account.findById(accountId));
-    });
-    Promise.all(promises).then((team) => {
+    Account.find({ _id: { $in: flight.team } }).then((team) => {
       flight.team = team;
       return res.json(flight);
-    })
+    });
   } else
     return res.json(flight);
 }
