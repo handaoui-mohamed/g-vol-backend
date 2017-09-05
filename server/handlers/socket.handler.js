@@ -52,15 +52,11 @@ function disconnectAccount(accountId) {
 }
 
 function removeAccountfromFlight(accountId, flightId) {
-	const socket = getAccountSocket(accountId);
-	if (socket) socket.leave(flightId);
-}
-
-function removeAccountAndDisconnect(accountId, flightId) {
+	let io = socketConfig.io;
 	const socket = getAccountSocket(accountId);
 	if (socket) {
-		socket.leave(room);
-		socket.disconnect();
+		socket.leave(flightId);
+		io.in(flightId).emit('unjoined', JSON.stringify({ flightId }));
 	}
 }
 
@@ -75,6 +71,5 @@ export default {
 	isInFlight,
 	getAccountSocket,
 	disconnectAccount,
-	removeAccountfromFlight,
-	removeAccountAndDisconnect
+	removeAccountfromFlight
 }

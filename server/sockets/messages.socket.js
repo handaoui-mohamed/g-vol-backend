@@ -21,4 +21,4 @@ export default function (io, socket, flightId) {
             else console.log('Message create validation', err);
         });
     });
-}
+}   

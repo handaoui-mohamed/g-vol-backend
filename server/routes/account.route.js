@@ -8,7 +8,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
   /** GET /api/accounts - Get list of accounts */
-  .get(authHandler.authAndCheckRoles(['superadmin', 'admin']), accountCtrl.list)
+  .get(authHandler.authAndCheckRoles(['superadmin', 'admin', 'clc']), accountCtrl.list)
 
   /** POST /api/accounts - Create new account */
   .post(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.createAccount), accountCtrl.create);
