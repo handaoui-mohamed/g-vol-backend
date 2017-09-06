@@ -3,6 +3,7 @@ import Flight from '../models/flight.model';
 import Company from '../models/company.model'
 import APIError from '../helpers/APIError';
 import mongoose from 'mongoose';
+import socket from '../../config/socket';
 
 function getFlightInfo(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
@@ -15,7 +16,16 @@ function initFlightInfo(req, res, next) {
         flight.flightInfo.ezfw = req.body.ezfw;
         flight.flightInfo.createdAt = new Date();
         flight.save()
-            .then(savedFlight => res.json(savedFlight.flightInfo))
+            .then(savedFlight => {
+                // emit using socket
+                let flightId = savedFlight._id;
+                socket.io.to(flightId).emit('flight-info/' + flightId, JSON.stringify({
+                    flightId,
+                    flightInfo: savedFlight.flightInfo
+                }));
+                //return http response
+                res.json(savedFlight.flightInfo);
+            })
             .catch(e => next(e));
     })
         .catch(e => next(e));
@@ -39,7 +49,16 @@ function updateFlightInfo(req, res, next) {
                 flight.flightInfo.tripFuel = req.body.tripFuel;
             }
             flight.save()
-                .then((savedFlight) => res.json(savedFlight.flightInfo))
+                .then((savedFlight) => {
+                    // emit using socket
+                    let flightId = savedFlight._id;
+                    socket.io.to(flightId).emit('flight-info/' + flightId, JSON.stringify({
+                        flightId,
+                        flightInfo: savedFlight.flightInfo
+                    }));
+                    //return http response
+                    res.json(savedFlight.flightInfo)
+                })
                 .catch(e => next(e));
         }
         else {
