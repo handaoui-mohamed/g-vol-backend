@@ -27,11 +27,12 @@ const updatePropFlightInfo = {
 
 router.route('/:flightId')
   // init docs of the flight
-  .put(authHandler.authAndCheckRoles(['clc']), documentCtrl.init);
+  .get(authHandler.authAndCheckRoles(['clc', 'trc']), documentCtrl.getDocuments)
+  .post(authHandler.authAndCheckRoles(['clc']), documentCtrl.init);
 
 // Update flight documents satatus 
-//: typeIdDoc examples: "fi", "other _docid" 
-router.route('/:flightId/:typeIdDoc/status')
+//: typeIdDoc examples: "fi", "other_docid" 
+router.route('/:flightId/:type:docId/status')
   .put(authHandler.authAndCheckRoles(['trc']), validate(paramValidation.updateFlightDoc), documentCtrl.loadDoc, documentCtrl.updateDocStatus);
 
 /**
@@ -62,7 +63,7 @@ router.route('/:flightId/' + documentCtrl.docTypes.flightInfo)
  * Offload list routing
  */
 router.route('/:flightId/' + documentCtrl.docTypes.offloadList)
-  .post(authHandler.authAndCheckRoles(['tl']),offloadListCtrl.initOffloadList) 
-  .put(authHandler.authAndCheckRoles(['tl','trc']),offloadListCtrl.updateOffloadList);
+  .post(authHandler.authAndCheckRoles(['tl']), offloadListCtrl.initOffloadList)
+  .put(authHandler.authAndCheckRoles(['tl', 'trc']), offloadListCtrl.updateOffloadList);
 
 export default router;

@@ -4,7 +4,7 @@ import Company from '../models/company.model'
 import APIError from '../helpers/APIError';
 import mongoose from 'mongoose';
 
-const docTypes = { 
+const docTypes = {
     others: 'oth',
     baggageReport: 'br',
     flightInfo: 'fi',
@@ -14,9 +14,8 @@ const docTypes = {
 function loadDoc(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
         var doc;
-        const paramsDoc = req.params.typeIdDoc.split(' ');
-        var typeDoc = paramsDoc[0] ; 
-        const idDoc = paramsDoc[1] ; 
+        const typeDoc = req.params.type;
+        const idDoc = req.params.docId;
         if (typeDoc == docTypes.others) doc = flight.otherDocuments.id(idDoc);
         else if (typeDoc == docTypes.baggageReport) doc = flight.baggageReport;
         else if (typeDoc == docTypes.flightInfo) doc = flight.flightInfo;
@@ -31,8 +30,8 @@ function loadDoc(req, res, next) {
             next(err);
         }
         req.flight = flight;
-        req.typeDoc = typeDoc ;
-        req.idDoc = idDoc ; 
+        req.typeDoc = typeDoc;
+        req.idDoc = idDoc;
         next();
     })
         .catch(e => next(e));
@@ -64,7 +63,7 @@ function init(req, res, next) {
             flight.baggageReport.status = false;
             flight.flightInfo.status = false;
             flight.offloadList.status = false;
-            flight.status = 'en cours';
+            flight.status = 'inprogress';
             flight.save()
                 .then(savedFlight => res.json(savedFlight))
                 .catch(e => next(e));
@@ -74,7 +73,11 @@ function init(req, res, next) {
         .catch(e => next(e));
 }
 
-export default { init, loadDoc, updateDocStatus, docTypes }
+function getDocuments(req, res, next) {
+    Flight.findOne({ _id: req.params.flightId }).select({ baggageReport: 1, flightInfo: 1, offloadList: 1, otherDocuments: 1 }).then((flight) => { res.json(flight) });
+}
+
+export default { init, loadDoc, updateDocStatus, docTypes, getDocuments }
 
 
 

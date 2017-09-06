@@ -23,7 +23,7 @@ function initFlightInfo(req, res, next) {
 
 function updateFlightInfo(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
-        if (flight.createdAt) {
+        if (flight.flightInfo.createdAt) {
             if (req.loggedAccount.function.name == 'clc') flight.flightInfo.ezfw = req.body.ezfw;
             else if (req.loggedAccount.function.name == 'trc') {
                 flight.flightInfo.blockFuel = req.body.blockFuel;
@@ -43,7 +43,7 @@ function updateFlightInfo(req, res, next) {
                 .catch(e => next(e));
         }
         else {
-            const err = new APIError("flight info not initialized yet", httpStatus.UNAUTHORIZED);
+            const err = new APIError("flight info not initialized yet", httpStatus.FORBIDDEN);
             next(err);
         }
 
