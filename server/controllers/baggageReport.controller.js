@@ -8,13 +8,7 @@ import socket from '../../config/socket';
 
 function initTableBaggageReport(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
-        flight.baggageReport.createdAt = new Date();
-        req.body.table.forEach(function (ele) {
-            if (ele.baggageType) delete ele.baggageType;
-            if (ele.nbPieces) delete ele.nbPieces;
-            if (ele.uldNumber) delete ele.uldNumber;
-            if (ele.position) delete ele.position;
-        });
+        if (!flight.baggageReport.createdAt) flight.baggageReport.createdAt = new Date();
         flight.baggageReport.table = req.body.table;
         flight.save()
             .then(savedFlight => {
