@@ -1,7 +1,11 @@
 import Joi from 'joi';
+import JoiObjectid from 'joi-objectid';
+
+Joi.objectId = JoiObjectid(Joi);
 
 const body = {
-  status: Joi.boolean()
+  status: Joi.boolean(),
+  docId: Joi.objectId()
 }
 
 export default {
@@ -10,7 +14,7 @@ export default {
     body: body,
     params: {
       flightId: Joi.string().hex().required(),
-      typeIdDoc: Joi.string().required(),
+      type: Joi.string().required(),
     }
   },
 };

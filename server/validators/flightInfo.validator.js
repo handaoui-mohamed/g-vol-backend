@@ -5,18 +5,18 @@ const bodyInit = {
 }
 const bodyUpdate= {
 
-    blockFuel: Joi.string(), 
-    chocksOn: Joi.string(), 
-    crew: Joi.string(), 
-    doi: Joi.string(), 
-    dow: Joi.string(), 
+    blockFuel: Joi.string().allow(''), 
+    chocksOn: Joi.string().allow(''), 
+    crew: Joi.string().allow(''), 
+    doi: Joi.string().allow(''), 
+    dow: Joi.string().allow(''), 
     ezfw: Joi.string(),
-    flightTime: Joi.string(), 
-    landingTime: Joi.string(), 
-    rtow: Joi.string(), 
-    taxiFuel: Joi.string(), 
-    tripFuel: Joi.string(), 
-    waterUpLift: Joi.string()
+    flightTime: Joi.string().allow(''), 
+    landingTime: Joi.string().allow(''), 
+    rtow: Joi.string().allow(''), 
+    taxiFuel: Joi.string().allow(''), 
+    tripFuel: Joi.string().allow(''), 
+    waterUpLift: Joi.string().allow('')
 }
 export default {
     initFlightInfo : {

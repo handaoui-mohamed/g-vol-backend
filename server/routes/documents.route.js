@@ -32,7 +32,7 @@ router.route('/:flightId')
 
 // Update flight documents satatus 
 //: typeIdDoc examples: "fi", "other_docid" 
-router.route('/:flightId/:type:docId/status')
+router.route('/:flightId/:type/status')
   .put(authHandler.authAndCheckRoles(['trc']), validate(paramValidation.updateFlightDoc), documentCtrl.loadDoc, documentCtrl.updateDocStatus);
 
 /**

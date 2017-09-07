@@ -3,6 +3,7 @@ import Flight from '../models/flight.model';
 import Company from '../models/company.model'
 import APIError from '../helpers/APIError';
 import mongoose from 'mongoose';
+import socket from '../../config/socket';
 
 const docTypes = {
     others: 'oth',
@@ -15,7 +16,7 @@ function loadDoc(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
         var doc;
         const typeDoc = req.params.type;
-        const idDoc = req.params.docId;
+        const idDoc = req.body.docId;
         if (typeDoc == docTypes.others) doc = flight.otherDocuments.id(idDoc);
         else if (typeDoc == docTypes.baggageReport) doc = flight.baggageReport;
         else if (typeDoc == docTypes.flightInfo) doc = flight.flightInfo;
@@ -44,10 +45,17 @@ function updateDocStatus(req, res, next) {
     req.flight.save()
         .then(savedFlight => {
             let response;
+            let flightId = savedFlight._id;
             if (req.typeDoc == docTypes.others) response = savedFlight.otherDocuments.id(req.idDoc);
             else if (req.typeDoc == docTypes.baggageReport) response = savedFlight.baggageReport;
             else if (req.typeDoc == docTypes.flightInfo) response = savedFlight.flightInfo;
             else if (req.typeDoc == docTypes.offloadList) response = savedFlight.offloadList;
+            socket.io.to(flightId).emit('flight-documents-status/' + flightId, JSON.stringify({
+                flightId,
+                type: req.typeDoc,
+                docId: req.idDoc,
+                status: response.status
+            }));
             res.json(response);
         })
         .catch(e => next(e));
@@ -65,7 +73,14 @@ function init(req, res, next) {
             flight.offloadList.status = false;
             flight.status = 'inprogress';
             flight.save()
-                .then(savedFlight => res.json(savedFlight))
+                .then(savedFlight => {
+                    let flightId = savedFlight._id;
+                    socket.io.to(flightId).emit('flight-documents-init/' + flightId, JSON.stringify({
+                        flightId,
+                        documents: savedFlight.otherDocuments
+                    }));
+                    res.json(savedFlight)
+                })
                 .catch(e => next(e));
         })
             .catch(e => next(e));
