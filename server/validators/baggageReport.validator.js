@@ -5,32 +5,34 @@ Joi.objectId = JoiObjectid(Joi);
 
 const bodyInit = {
     // Table contains uld types essential to init the baggage report
-    table: Joi.array().items(Joi.string())
+    table: Joi.array().items({
+        uldType: Joi.string()
+    })
 }
 
 const bodyUpdate = {
 
-    table : Joi.array().items(Joi.object({
+    table: Joi.array().items(Joi.object({
         id: Joi.string().hex().required(),
-        baggageType : Joi.string(), 
+        baggageType: Joi.string(),
         nbPieces: Joi.number(),
-        position: Joi.string(), 
+        position: Joi.string(),
         uldType: Joi.string()
     }))
 }
 const bodyDelete = {
-    table : Joi.array().items(Joi.objectId())
+    table: Joi.array().items(Joi.objectId())
 }
 
 export default {
 
-    initTable : {
+    initTable: {
         body: bodyInit
     },
     updateTable: {
-        body : bodyUpdate
+        body: bodyUpdate
     },
     deleteTableItems: {
-        body: bodyDelete 
+        body: bodyDelete
     }
 }
