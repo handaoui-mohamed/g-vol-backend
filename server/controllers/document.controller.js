@@ -74,10 +74,15 @@ function init(req, res, next) {
             flight.status = 'inprogress';
             flight.save()
                 .then(savedFlight => {
-                    let flightId = savedFlight._id;
-                    socket.io.to(flightId).emit('flight-documents-init/' + flightId, JSON.stringify({
+                    let flightId = flight._id;
+                    socket.io.to(req.params.flightId).emit('docs-init/' + req.params.flightId, JSON.stringify({
                         flightId,
-                        documents: savedFlight.otherDocuments
+                        documents: {
+                            baggageReport: flight.baggageReport,
+                            flightInfo: flight.flightInfo,
+                            offloadList: flight.offloadList,
+                            otherDocuments: flight.otherDocuments
+                        }
                     }));
                     res.json(savedFlight)
                 })
