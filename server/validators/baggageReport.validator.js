@@ -13,7 +13,7 @@ const bodyInit = {
 const bodyUpdate = {
 
     table: Joi.array().items(Joi.object({
-        id: Joi.string().hex().required(),
+        _id: Joi.string().hex().required(),
         baggageType: Joi.string(),
         nbPieces: Joi.number(),
         position: Joi.string(),

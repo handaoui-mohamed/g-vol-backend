@@ -36,7 +36,7 @@ function updateTableBaggageReport(req, res, next) {
         req.body.table.forEach(function (element) {
             var tableEle;
             req.acceptedProps.forEach((proprety) => {
-                tableEle = flight.baggageReport.table.id(element.id);
+                tableEle = flight.baggageReport.table.id(element._id);
                 if (tableEle) tableEle.set(proprety, element[proprety]);
             });
         });
