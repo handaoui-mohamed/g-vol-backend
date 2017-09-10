@@ -16,6 +16,7 @@ function initTableBaggageReport(req, res, next) {
                 let flightId = savedFlight._id;
                 socket.io.to(flightId).emit('baggage-report/' + flightId, JSON.stringify({
                     flightId,
+                    accountId: req.loggedAccount._id,
                     baggageReport: savedFlight.baggageReport
                 }));
                 //return http response
@@ -46,6 +47,7 @@ function updateTableBaggageReport(req, res, next) {
                 let flightId = savedFlight._id;
                 socket.io.to(flightId).emit('baggage-report/' + flightId, JSON.stringify({
                     flightId,
+                    accountId: req.loggedAccount._id,
                     baggageReport: savedFlight.baggageReport
                 }));
                 //return http response
@@ -69,6 +71,7 @@ function removeBaggageReportTableItems(req, res, next) {
                 let flightId = savedFlight._id;
                 socket.io.to(flightId).emit('baggage-report/' + flightId, JSON.stringify({
                     flightId,
+                    accountId: req.loggedAccount._id,
                     baggageReport: savedFlight.baggageReport
                 }));
                 //return http response

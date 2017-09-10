@@ -21,6 +21,7 @@ function initFlightInfo(req, res, next) {
                 let flightId = savedFlight._id;
                 socket.io.to(flightId).emit('flight-info/' + flightId, JSON.stringify({
                     flightId,
+                    accountId: req.loggedAccount._id,
                     flightInfo: savedFlight.flightInfo
                 }));
                 //return http response
@@ -54,6 +55,7 @@ function updateFlightInfo(req, res, next) {
                     let flightId = savedFlight._id;
                     socket.io.to(flightId).emit('flight-info/' + flightId, JSON.stringify({
                         flightId,
+                        accountId: req.loggedAccount._id,
                         flightInfo: savedFlight.flightInfo
                     }));
                     //return http response
