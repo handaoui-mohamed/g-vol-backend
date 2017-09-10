@@ -5,6 +5,7 @@ import Account from '../models/account.model';
 
 function handshake(socket) {
 	let token = socket.handshake.query.token;
+	console.log(token)
 	if (token) {
 		token = token.split(' ')[1];
 		let accountJWT;
@@ -30,7 +31,7 @@ function handshake(socket) {
 			socket.emit('unauthorized');
 			socket.disconnect();
 		}
-	}
+	} else socket.disconnect();
 }
 
 function getAccountSocket(accountId) {
