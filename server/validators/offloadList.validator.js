@@ -11,7 +11,7 @@ const body = {
             position: Joi.string()
         }))
 
-    })).required()
+    }))
 
 }
 

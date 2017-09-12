@@ -24,6 +24,7 @@ function handshake(socket) {
 				else {
 					socket.accountId = account._id.toString();
 					socket.account = account;
+					console.log("account: ",account.username);					
 					socket.emit('connected', account);
 				}
 			});

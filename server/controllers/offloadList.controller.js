@@ -10,9 +10,11 @@ function initOffloadList(req, res, next) {
 
         flight.offloadList.createdAt = new Date();
         req.body.table.forEach(function (ele) {
-            ele.offloadBaggage.forEach(function(element) {
-                if (element.position) delete element.position ; 
-            });
+            if (ele.offloadBaggage) {
+                ele.offloadBaggage.forEach(function (element) {
+                    if (element.position) delete element.position;
+                });
+            }
         });
         flight.offloadList.table = req.body.table;
         flight.save()
@@ -25,10 +27,10 @@ function initOffloadList(req, res, next) {
         .catch(e => next(e));
 }
 
-function getOffloadList(req,res,next) {
-        Flight.get(req.params.flightId).then( (flight) => {
-            res.json(flight.offloadList) ;
-        })
+function getOffloadList(req, res, next) {
+    Flight.get(req.params.flightId).then((flight) => {
+        res.json(flight.offloadList);
+    })
 }
 
 function updateOffloadList(req, res, next) {
@@ -37,15 +39,17 @@ function updateOffloadList(req, res, next) {
             let table = [];
             if (req.loggedAccount.function.name == 'tl') {
                 req.body.table.forEach((element, index) => {
-                    element.offloadBaggage.forEach(function (ele) {
-                        if (ele.position) delete ele.position;
-                    });
-                    table[index] = {
-                        _id: element._id,
-                        nbPcs: element.nbPcs,
-                        passengerName: element.passengerName,
-                        totalWeight: element.totalWeight,
-                        offloadBaggage: element.offloadBaggage
+                    if (element.offloadBaggage) {
+                        element.offloadBaggage.forEach(function (ele) {
+                            if (ele.position) delete ele.position;
+                        });
+                        table[index] = {
+                            _id: element._id,
+                            nbPcs: element.nbPcs,
+                            passengerName: element.passengerName,
+                            totalWeight: element.totalWeight,
+                            offloadBaggage: element.offloadBaggage
+                        }
                     }
 
                 });
@@ -56,10 +60,12 @@ function updateOffloadList(req, res, next) {
                 req.body.table.forEach(function (element) {
                     eleTable = table.id(element._id);
                     if (eleTable) {
-                        element.offloadBaggage.forEach(function (e) {
-                            eleOB = eleTable.offloadBaggage.id(e._id);
-                            if (eleOB) eleOB.position = e.position ;
-                        });
+                        if (element.offloadBaggage) {
+                            element.offloadBaggage.forEach(function (e) {
+                                eleOB = eleTable.offloadBaggage.id(e._id);
+                                if (eleOB) eleOB.position = e.position;
+                            });
+                        }
                     }
                 });
 
@@ -71,7 +77,7 @@ function updateOffloadList(req, res, next) {
         }
         else {
 
-            const err  = new APIError("Offload list not initialized yet",httpStatus.UNAUTHORIZED) ;
+            const err = new APIError("Offload list not initialized yet", httpStatus.UNAUTHORIZED);
         }
 
     })
@@ -81,4 +87,4 @@ function updateOffloadList(req, res, next) {
 
 }
 
-export default { initOffloadList, updateOffloadList };
+export default { initOffloadList, updateOffloadList, getOffloadList };

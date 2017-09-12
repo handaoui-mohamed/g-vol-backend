@@ -11,27 +11,22 @@ const OffloadList = {
         nbPcs:
         {
             type: Number,
-            required : true
         },
 
         passengerName: {
             type: String,
-            required: true 
         },
         passengerType: {
             type: String,
-            required : true,
             enum: ['male', 'female', 'child', 'infant'],
         },
         totalWeight: {
             type: Number,
-            required : true
         },
         offloadBaggage: [new mongoose.Schema({
             pieceId: {
                 type: String,
                 lowercase: true,
-                required: true 
             },
             position: {
                 type: String,

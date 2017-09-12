@@ -63,6 +63,7 @@ router.route('/:flightId/' + documentCtrl.docTypes.flightInfo)
  * Offload list routing
  */
 router.route('/:flightId/' + documentCtrl.docTypes.offloadList)
+  .get(authHandler.authAndCheckRoles(['tl','clc','trc']),offloadListCtrl.getOffloadList)
   .post(authHandler.authAndCheckRoles(['tl']), offloadListCtrl.initOffloadList)
   .put(authHandler.authAndCheckRoles(['tl', 'trc']), offloadListCtrl.updateOffloadList);
 
