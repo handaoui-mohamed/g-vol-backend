@@ -94,7 +94,7 @@ function init(req, res, next) {
 }
 
 function getDocuments(req, res, next) {
-    Flight.findOne({ _id: req.params.flightId }).select({ baggageReport: 1, flightInfo: 1, offloadList: 1, otherDocuments: 1 }).then((flight) => { res.json(flight) });
+    Flight.findOne({ _id: req.params.flightId }).select({ baggageReport: 1, flightInfo: 1, offloadList: 1, otherDocuments: 1, paxReport : 1 }).then((flight) => { res.json(flight) });
 }
 
 export default { init, loadDoc, updateDocStatus, docTypes, getDocuments }
