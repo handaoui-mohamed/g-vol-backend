@@ -34,6 +34,7 @@ function getOffloadList(req, res, next) {
 }
 
 function updateOffloadList(req, res, next) {
+    console.log(req.body);
     Flight.get(req.params.flightId).then((flight) => {
         if (flight.offloadList.createdAt) {
             let table = [];
@@ -48,7 +49,8 @@ function updateOffloadList(req, res, next) {
                             nbPcs: element.nbPcs,
                             passengerName: element.passengerName,
                             totalWeight: element.totalWeight,
-                            offloadBaggage: element.offloadBaggage
+                            offloadBaggage: element.offloadBaggage,
+                            passengerType: element.passengerType
                         }
                     }
 
@@ -72,7 +74,7 @@ function updateOffloadList(req, res, next) {
             }
             flight.offloadList.table = table;
             flight.save()
-                .then(savedFlight => res.json(savedFlight.offloadList))
+                .then(savedFlight => { console.log(savedFlight.offloadList); res.json(savedFlight.offloadList) })
                 .catch(e => next(e));
         }
         else {
