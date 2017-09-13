@@ -48,6 +48,19 @@ function createFlights(req, res, next) {
   })
 }
 
+// change flight status
+function changeStatus(req, res, next) {
+  Flight.get(req.params.flightId)
+    .then((flight) => {
+      flight.status = req.body.status;
+      flight.comment = req.body.comment;
+      flight.save()
+        .then(savedFlight => res.json({ _id: flight._id, status: flight.status, comment: flight.comment }))
+        .catch(e => next(e));
+    })
+    .catch(e => next(e));
+}
+
 /**
  * Update existing flight
  * @property {Flight} req.body - The flight.
@@ -156,5 +169,6 @@ export default {
   list,
   count,
   remove,
-  createFlights
+  createFlights,
+  changeStatus
 };

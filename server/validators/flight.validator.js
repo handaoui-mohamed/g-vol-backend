@@ -49,4 +49,14 @@ export default {
     }
   },
 
+  changeStatus: {
+    body: {
+      status: Joi.string().valid('inprogress', 'done').required(),
+      comment: Joi.string().allow('')
+    },
+    params: {
+      flightId: Joi.string().hex().required()
+    }
+  }
+
 };

@@ -22,12 +22,6 @@ function initOffloadList(req, res, next) {
             .then((savedFlight) => {
                 // emit using socket
                 let flightId = savedFlight._id;
-
-                socket.io.to(flightId).emit('offload-report/' + flightId, JSON.stringify({
-                    flightId,
-                    offloadReport: generateOffloadReport(savedFlight.offloadList)
-                }));
-
                 socket.io.to(flightId).emit('offload-list/' + flightId, JSON.stringify({
                     flightId,
                     offloadList: savedFlight.offloadList
@@ -45,31 +39,6 @@ function getOffloadList(req, res, next) {
     Flight.get(req.params.flightId).then((flight) => {
         res.json(flight.offloadList);
     })
-}
-
-function generateOffloadReport(offloadList) {
-    if (offloadList && offloadList.createdAt) {
-        let offloadReport = {
-            pax: {
-                total: 0,
-                male: 0,
-                female: 0,
-                child: 0,
-                infant: 0
-            },
-            totalWeight: 0,
-            nbPcs: 0,
-            table: [/*{pieceId, position}*/]
-        }
-        offloadList.table.forEach((row) => {
-            offloadReport.pax[row.passengerType]++;
-            offloadReport.pax.total++;
-            offloadReport.totalWeight += row.totalWeight;
-            offloadReport.nbPcs += row.nbPcs;
-            offloadReport.table = offloadReport.table.concat(row.offloadBaggage);
-        });
-        return offloadReport;
-    }
 }
 
 function updateOffloadList(req, res, next) {
@@ -115,11 +84,6 @@ function updateOffloadList(req, res, next) {
                 .then(savedFlight => {
                     // emit using socket
                     let flightId = savedFlight._id;
-                    socket.io.to(flightId).emit('offload-report/' + flightId, JSON.stringify({
-                        flightId,
-                        offloadReport: generateOffloadReport(savedFlight.offloadList)
-                    }));
-
                     socket.io.to(flightId).emit('offload-list/' + flightId, JSON.stringify({
                         flightId,
                         offloadList: savedFlight.offloadList
@@ -141,4 +105,4 @@ function updateOffloadList(req, res, next) {
 
 }
 
-export default { initOffloadList, updateOffloadList, getOffloadList, generateOffloadReport };
+export default { initOffloadList, updateOffloadList, getOffloadList };
