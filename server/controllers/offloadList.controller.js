@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import Flight from '../models/flight.model';
 import Company from '../models/company.model'
 import APIError from '../helpers/APIError';
+import socket from '../../config/socket';
 
 
 
@@ -19,6 +20,19 @@ function initOffloadList(req, res, next) {
         flight.offloadList.table = req.body.table;
         flight.save()
             .then((savedFlight) => {
+                // emit using socket
+                let flightId = savedFlight._id;
+
+                socket.io.to(flightId).emit('offload-report/' + flightId, JSON.stringify({
+                    flightId,
+                    offloadReport: generateOffloadReport(savedFlight.offloadList)
+                }));
+
+                socket.io.to(flightId).emit('offload-list/' + flightId, JSON.stringify({
+                    flightId,
+                    offloadList: savedFlight.offloadList
+                }));
+                //return http response
                 res.json(savedFlight.offloadList)
                 // Notify TRC and CLC of the offload list
             })
@@ -33,8 +47,32 @@ function getOffloadList(req, res, next) {
     })
 }
 
+function generateOffloadReport(offloadList) {
+    if (offloadList && offloadList.createdAt) {
+        let offloadReport = {
+            pax: {
+                total: 0,
+                male: 0,
+                female: 0,
+                child: 0,
+                infant: 0
+            },
+            totalWeight: 0,
+            nbPcs: 0,
+            table: [/*{pieceId, position}*/]
+        }
+        offloadList.table.forEach((row) => {
+            offloadReport.pax[row.passengerType]++;
+            offloadReport.pax.total++;
+            offloadReport.totalWeight += row.totalWeight;
+            offloadReport.nbPcs += row.nbPcs;
+            offloadReport.table = offloadReport.table.concat(row.offloadBaggage);
+        });
+        return offloadReport;
+    }
+}
+
 function updateOffloadList(req, res, next) {
-    console.log(req.body);
     Flight.get(req.params.flightId).then((flight) => {
         if (flight.offloadList.createdAt) {
             let table = [];
@@ -74,7 +112,21 @@ function updateOffloadList(req, res, next) {
             }
             flight.offloadList.table = table;
             flight.save()
-                .then(savedFlight => { console.log(savedFlight.offloadList); res.json(savedFlight.offloadList) })
+                .then(savedFlight => {
+                    // emit using socket
+                    let flightId = savedFlight._id;
+                    socket.io.to(flightId).emit('offload-report/' + flightId, JSON.stringify({
+                        flightId,
+                        offloadReport: generateOffloadReport(savedFlight.offloadList)
+                    }));
+
+                    socket.io.to(flightId).emit('offload-list/' + flightId, JSON.stringify({
+                        flightId,
+                        offloadList: savedFlight.offloadList
+                    }));
+                    //return http response
+                    res.json(savedFlight.offloadList);
+                })
                 .catch(e => next(e));
         }
         else {
@@ -89,4 +141,4 @@ function updateOffloadList(req, res, next) {
 
 }
 
-export default { initOffloadList, updateOffloadList, getOffloadList };
+export default { initOffloadList, updateOffloadList, getOffloadList, generateOffloadReport };

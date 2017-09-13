@@ -4,6 +4,7 @@ import Company from '../models/company.model'
 import APIError from '../helpers/APIError';
 import mongoose from 'mongoose';
 import socket from '../../config/socket';
+import OffloadListController from './offloadList.controller';
 
 const docTypes = {
     others: 'oth',
@@ -94,7 +95,12 @@ function init(req, res, next) {
 }
 
 function getDocuments(req, res, next) {
-    Flight.findOne({ _id: req.params.flightId }).select({ baggageReport: 1, flightInfo: 1, offloadList: 1, otherDocuments: 1, paxReport : 1 }).then((flight) => { res.json(flight) });
+    Flight.findOne({ _id: req.params.flightId }).select({ baggageReport: 1, flightInfo: 1, offloadList: 1, otherDocuments: 1, paxReport: 1 }).then((flight) => {
+        let flightJSON = flight.toJSON();
+        flightJSON.offloadReport = OffloadListController.generateOffloadReport(flight.offloadList);
+        delete flightJSON.offloadList;
+        res.json(flightJSON);
+    });
 }
 
 export default { init, loadDoc, updateDocStatus, docTypes, getDocuments }
