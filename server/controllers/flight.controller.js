@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import Flight from '../models/flight.model';
 import Account from '../models/account.model';
 import APIError from '../helpers/APIError';
+import socket from '../../config/socket';
 
 /**
  * Load flight and append to req.
@@ -55,7 +56,16 @@ function changeStatus(req, res, next) {
       flight.status = req.body.status;
       flight.comment = req.body.comment;
       flight.save()
-        .then(savedFlight => res.json({ _id: flight._id, status: flight.status, comment: flight.comment }))
+        .then(savedFlight => {
+          // emit using socket
+          let flightId = savedFlight._id;
+          socket.io.to(flightId).emit('flight-status/' + flightId, JSON.stringify({
+            flightId,
+            status: savedFlight.status
+          }));
+          //return http response
+          res.json({ _id: savedFlight._id, status: savedFlight.status, comment: savedFlight.comment })
+        })
         .catch(e => next(e));
     })
     .catch(e => next(e));
