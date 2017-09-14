@@ -17,15 +17,15 @@ function login(req, res, next) {
     username: req.body.username
   }).then((account) => {
     if (account) {
-      if ((account.function.name).indexOf(accountType) === -1) {
+      if ((accountType).indexOf(account.function.name) === -1) {
         return next(new APIError('Authentication error', httpStatus.UNAUTHORIZED, true));
       }
       if (account.comparePasswords(req.body.password)) {
         const token = jwt.sign({
           id: account._id
         }, config.jwtSecret, {
-          expiresIn: '10h'
-        });
+            expiresIn: '10h'
+          });
         return res.json({
           token,
           account

@@ -39,7 +39,7 @@ export default {
       password: Joi.string().min(8).required()
     },
     params: {
-      accountType: Joi.string().valid('admin', 'clc', 'trc', 'tl', 'tb').required()
+      accountType: Joi.string().valid('admin', 'clc', 'trc', 'tl', 'tb', 'superadmin-clc').required()
     }
   }
 };
