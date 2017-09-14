@@ -7,6 +7,9 @@ const OffloadList = {
     createdAt: {
         type: Date,
     },
+    finishedAt: {
+        type: Date
+    },
     table: [new mongoose.Schema({
         nbPcs:
         {
@@ -34,9 +37,7 @@ const OffloadList = {
             }
         })]
 
-    })
-    ]
-
+    })]
 }
 
 export default OffloadList; 

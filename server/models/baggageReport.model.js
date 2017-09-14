@@ -8,6 +8,9 @@ const BaggageReport = {
     createdAt: {
         type: Date
     },
+    finishedAt: {
+        type: Date
+    },
     table: {
         type: [new mongoose.Schema({
             baggageType: {
@@ -28,7 +31,7 @@ const BaggageReport = {
                 lowercase: true,
                 required: true
             }
-        })],
+        })]
     }
 }
 

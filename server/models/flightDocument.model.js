@@ -18,10 +18,13 @@ const FlightDocument = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    finishedAt: {
+        type: Date
+    },
     createdAt: {
         type: Date,
-        default: Date.now 
+        default: Date.now
     }
 });
 
-export default FlightDocument ; 
+export default FlightDocument; 

@@ -18,7 +18,10 @@ const PaxReport = {
     },
     createdAt: {
         type: Date,
-    }
+    },
+    finishedAt: {
+        type: Date
+    },
 }
 
 

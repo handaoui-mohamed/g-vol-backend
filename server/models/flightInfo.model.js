@@ -8,6 +8,9 @@ const FlightInfo = {
     createdAt: {
         type: Date,
     },
+    finishedAt: {
+        type: Date
+    },
     blockFuel: {
         type: String,
         lowercase: true

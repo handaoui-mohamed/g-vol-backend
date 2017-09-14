@@ -42,6 +42,7 @@ function updateDocStatus(req, res, next) {
 
     const doc = req.doc;
     doc.status = req.body.status;
+    if (doc.status) doc.finishedAt = new Date();
     req.flight.save()
         .then(savedFlight => {
             let response;
@@ -54,7 +55,8 @@ function updateDocStatus(req, res, next) {
                 flightId,
                 type: req.typeDoc,
                 docId: req.idDoc,
-                status: response.status
+                status: response.status,
+                finishedAt: response.finishedAt
             }));
             res.json(response);
         })
