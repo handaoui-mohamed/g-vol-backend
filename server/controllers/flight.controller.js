@@ -3,6 +3,7 @@ import Flight from '../models/flight.model';
 import Account from '../models/account.model';
 import APIError from '../helpers/APIError';
 import socket from '../../config/socket';
+import socket from '../../config/socket';
 
 /**
  * Load flight and append to req.
@@ -81,12 +82,25 @@ function update(req, res, next) {
   const data = req.body;
 
   req.acceptedProps.forEach((proprety) => {
-    console.log("HERE", data.dest);
     flight.set(proprety, data[proprety]);
   });
 
   flight.save()
-    .then(savedFlight => res.json(savedFlight))
+    .then(savedFlight => {
+      // emit using socket
+      let flightId = savedFlight._id;
+      if (req.loggedAccount.function.name = "trc") {
+        socket.io.to(flightId).emit('flight-time/' + flightId, JSON.stringify({
+          flightId,
+          eta: savedFlight.eta,
+          etd: savedFlight.etd,
+          ata: savedFlight.ata,
+          atd: savedFlight.atd,
+        }));
+      }
+      //return http response
+      res.json(savedFlight)
+    })
     .catch(e => next(e));
 }
 
