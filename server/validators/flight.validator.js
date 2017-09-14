@@ -49,6 +49,18 @@ export default {
     }
   },
 
+  changeTime: {
+    body: {
+      ata: Joi.string(),
+      atd: Joi.string(),
+      eta: Joi.string(),
+      etd: Joi.string(),
+    },
+    params: {
+      flightId: Joi.string().hex().required()
+    }
+  },
+
   changeStatus: {
     body: {
       status: Joi.string().valid('inprogress', 'done').required(),

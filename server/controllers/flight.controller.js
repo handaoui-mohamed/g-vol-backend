@@ -3,7 +3,6 @@ import Flight from '../models/flight.model';
 import Account from '../models/account.model';
 import APIError from '../helpers/APIError';
 import socket from '../../config/socket';
-import socket from '../../config/socket';
 
 /**
  * Load flight and append to req.
@@ -60,12 +59,39 @@ function changeStatus(req, res, next) {
         .then(savedFlight => {
           // emit using socket
           let flightId = savedFlight._id;
+          console.log("status",savedFlight.status);
           socket.io.to(flightId).emit('flight-status/' + flightId, JSON.stringify({
             flightId,
             status: savedFlight.status
           }));
           //return http response
           res.json({ _id: savedFlight._id, status: savedFlight.status, comment: savedFlight.comment })
+        })
+        .catch(e => next(e));
+    })
+    .catch(e => next(e));
+}
+
+function changeTime(req, res, next) {
+  Flight.get(req.params.flightId)
+    .then((flight) => {
+      flight.eta = req.body.eta;
+      flight.etd = req.body.etd;
+      flight.ata = req.body.ata;
+      flight.atd = req.body.atd;
+      flight.save()
+        .then(savedFlight => {
+          // emit using socket
+          let flightId = savedFlight._id;
+          socket.io.to(flightId).emit('flight-time/' + flightId, JSON.stringify({
+            flightId,
+            eta: savedFlight.eta,
+            etd: savedFlight.etd,
+            ata: savedFlight.ata,
+            atd: savedFlight.atd,
+          }));
+          //return http response
+          res.json(savedFlight);
         })
         .catch(e => next(e));
     })
@@ -86,21 +112,7 @@ function update(req, res, next) {
   });
 
   flight.save()
-    .then(savedFlight => {
-      // emit using socket
-      let flightId = savedFlight._id;
-      if (req.loggedAccount.function.name = "trc") {
-        socket.io.to(flightId).emit('flight-time/' + flightId, JSON.stringify({
-          flightId,
-          eta: savedFlight.eta,
-          etd: savedFlight.etd,
-          ata: savedFlight.ata,
-          atd: savedFlight.atd,
-        }));
-      }
-      //return http response
-      res.json(savedFlight)
-    })
+    .then(savedFlight => res.json(savedFlight))
     .catch(e => next(e));
 }
 
@@ -194,5 +206,6 @@ export default {
   count,
   remove,
   createFlights,
-  changeStatus
+  changeStatus,
+  changeTime
 };

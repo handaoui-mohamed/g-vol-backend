@@ -25,6 +25,8 @@ router.route('/batch').post(authHandler.authAndCheckRoles(['superadmin', 'admin'
 
 router.route('/:flightId/status').post(authHandler.authAndCheckRoles(['clc']), validate(paramValidation.changeStatus), flightCtrl.changeStatus);
 
+router.route('/:flightId/time').put(authHandler.authAndCheckRoles(['trc']), validate(paramValidation.changeTime), flightCtrl.changeTime);
+
 router.route('/:flightId')
   /** GET /api/flights/:flightId - Get flight */
   .get(authHandler.authenticate, flightCtrl.get)
