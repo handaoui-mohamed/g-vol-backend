@@ -5,6 +5,7 @@ export default function (io) {
         console.log('connectd flights');
         socketHandler.handshake(socket);
 
+        const reconnection = require('./reconnection.socket')(io, socket);
         const flightRoom = require('./flight-room.socket')(io, socket);
     });
 }
