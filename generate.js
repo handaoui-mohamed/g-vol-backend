@@ -28,7 +28,7 @@ mongoose.connection.on('connected', function () {
   generateAdmin();
   if (config.env === 'development') generateFakers();
   Promise.all(promises).then(() => {
-    mongoose.connection.close();
+    // mongoose.connection.close();
   });
 });
 

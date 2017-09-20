@@ -6,7 +6,8 @@
     "email": "user@gmail.com",
     "sexe": "female",
     "birthday": "05/05/1988",
-    "address": "user test town",
+	"address": "user test town",
+	"deleted": false,
     "function": {
       "name": "superadmin",
       "description": "description admin"
@@ -21,6 +22,7 @@
     "sexe": "female",
     "birthday": "05/05/1988",
     "address": "user test town",
+	"deleted": false,
     "function": {
       "name": "admin",
       "description": "description admin"
@@ -36,6 +38,7 @@
     "sexe": "female",
     "birthday": "05/05/1988",
     "address": "user test town",
+	"deleted": false,
     "function": {
       "name": "tb",
       "description": "description tri bagage"
@@ -51,6 +54,7 @@
     "sexe": "male",
     "birthday": "04/02/1988",
     "address": "user test town",
+	"deleted": false,
     "function": {
       "name": "clc",
       "description": "description clc"
@@ -66,6 +70,7 @@
     "sexe": "female",
     "birthday": "05/05/1988",
     "address": "user test town",
+	"deleted": false,
     "function": {
       "name": "tl",
       "description": "description team leader"
@@ -81,6 +86,7 @@
     "sexe": "male",
     "birthday": "05/05/1988",
     "address": "user test town",
+	"deleted": false,
     "function": {
       "name": "trc"
     },

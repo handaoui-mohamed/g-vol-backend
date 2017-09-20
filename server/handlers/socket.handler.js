@@ -16,7 +16,7 @@ function handshake(socket) {
 			socket.disconnect();
 		}
 		if (accountJWT)
-			Account.get(accountJWT.id).then((account) => {
+			Account.findOne({ _id: accountJWT.id, deleted: false }).then((account) => {
 				if (!account) {
 					socket.emit('unauthorized');
 					socket.disconnect();
@@ -24,7 +24,7 @@ function handshake(socket) {
 				else {
 					socket.accountId = account._id.toString();
 					socket.account = account;
-					console.log("account: ",account.username);					
+					console.log("account: ", account.username);
 					socket.emit('connected', account);
 				}
 			});

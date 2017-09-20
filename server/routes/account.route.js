@@ -23,7 +23,10 @@ router.route('/:accountId')
   .put(authHandler.authAndCheckRoles(['superadmin', 'admin']), validate(paramValidation.updateAccount), accountCtrl.update)
 
   /** DELETE /api/accounts/:accountId - Delete account */
-  .delete(authHandler.authAndCheckRoles(['superadmin', 'admin']), accountCtrl.remove);
+  .delete(authHandler.authAndCheckRoles(['superadmin', 'admin']), accountCtrl.remove)
+
+  /** PATCH /api/accounts/:accountId  - Restore account */
+  .patch(authHandler.authAndCheckRoles(['superadmin', 'admin']), accountCtrl.restore);
 
 /** Load account when API with accountId route parameter is hit */
 router.param('accountId', accountCtrl.load);

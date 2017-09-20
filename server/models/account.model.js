@@ -57,6 +57,10 @@ const AccountSchema = new mongoose.Schema({
     type: func,
     required: true
   },
+  deleted: {
+	  type: Boolean,
+	  default: false
+  },
   address: String,
   createdAt: {
     type: Date,

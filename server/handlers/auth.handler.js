@@ -27,7 +27,7 @@ function authenticate(req, res, next) {
   }
 
   if (req.jwtAccount) {
-    Account.get(req.jwtAccount.id).then((account) => {
+    Account.findOne({_id:req.jwtAccount.id, deleted: false}).then((account) => {
       if (!account)
         return next(err);
       return next();
@@ -60,7 +60,7 @@ function authAndCheckRoles(acceptedRoles) {
     }
 
     if (req.jwtAccount) {
-      Account.get(req.jwtAccount.id).then((account) => {
+      Account.findOne({_id:req.jwtAccount.id, deleted:false}).then((account) => {
         req.loggedAccount = account;
         if (!account || !acceptedRoles.includes(account.function.name)) {
           err = new APIError('FORBIDDEN', httpStatus.FORBIDDEN, true);
