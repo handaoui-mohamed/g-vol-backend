@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import accountRoutes from './account.route';
 import authRoutes from './auth.route';
 import companyRoutes from './company.route'
@@ -11,9 +12,10 @@ import flightTeamRoutes from './flightTeam.route';
 const router = express.Router(); // eslint-disable-line new-cap
 
 /** GET /health-check - Check service health */
-router.get('/health-check', (req, res) =>
-  res.send('OK')
-);
+router.get('/health-check', (req, res) => {
+	console.log("heree")
+	res.send('OK')
+});
 
 // mount account routes at /accounts
 router.use('/accounts', accountRoutes);
@@ -35,5 +37,12 @@ router.use('/flight-documents', flightDocumentsRoutes);
 // mount pax report of a flight at /flight-paxreport
 router.use('/flight-paxreport', flightPaxReportRoutes);
 
+const apiRouter = express.Router(); // eslint-disable-line new-cap
+apiRouter.use('/api', router);
 
-export default router;
+const routers = express.Router();
+routers.use(apiRouter);
+routers.get('*', (req, res) => {
+	res.sendFile('index.html', { root: path.resolve(__dirname + '/../../public') });
+});
+export default routers;
