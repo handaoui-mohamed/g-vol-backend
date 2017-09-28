@@ -13,10 +13,11 @@ import winstonInstance from './winston';
 import routes from '../server/routes/index.route';
 import config from './config';
 import APIError from '../server/helpers/APIError';
+import path from 'path';
 
 const app = express();
 
-app.use(express.static('../public')); 		// set the static files location /public/img will be /img for users
+app.use(express.static(path.join(__dirname, '../public'))); 		// set the static files location /public/img will be /img for users
 
 if (config.env === 'development') {
 	app.use(logger('dev'));
