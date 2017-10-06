@@ -51,15 +51,25 @@ function updateOffloadList(req, res, next) {
                         element.offloadBaggage.forEach(function (ele) {
                             if (ele.position) delete ele.position;
                         });
+                    }
+                    if (element._id)
                         table[index] = {
                             _id: element._id,
                             nbPcs: element.nbPcs,
                             passengerName: element.passengerName,
+                            passengerType: element.passengerType,
+                            totalWeight: element.totalWeight,
+                            offloadBaggage: element.offloadBaggage
+                        }
+                    else
+                        table[index] = {
+                            nbPcs: element.nbPcs,
+                            passengerName: element.passengerName,
+                            passengerType: element.passengerType,
                             totalWeight: element.totalWeight,
                             offloadBaggage: element.offloadBaggage,
                             passengerType: element.passengerType
                         }
-                    }
 
                 });
             }
